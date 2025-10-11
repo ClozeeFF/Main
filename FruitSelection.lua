@@ -1,7 +1,3 @@
--- FruitSelection.lua - macOS Style Dark Theme UI for Fruit Selection
--- Author: Zebux
--- Version: 1.0
-
 local FruitSelection = {}
 
 -- Services
@@ -230,46 +226,10 @@ local function createWindowControls(parent)
     controlsContainer.Parent = parent
     
     -- Close Button (Red)
-    local closeBtn = Instance.new("TextButton")
-    closeBtn.Name = "CloseBtn"
-    closeBtn.Size = UDim2.new(0, 12, 0, 12)
-    closeBtn.Position = UDim2.new(0, 0, 0, 0)
-    closeBtn.BackgroundColor3 = colors.close
-    closeBtn.BorderSizePixel = 0
-    closeBtn.Text = ""
-    closeBtn.Parent = controlsContainer
-    
-    local closeCorner = Instance.new("UICorner")
-    closeCorner.CornerRadius = UDim.new(0.5, 0)
-    closeCorner.Parent = closeBtn
-    
+
     -- Minimize Button (Yellow)
-    local minimizeBtn = Instance.new("TextButton")
-    minimizeBtn.Name = "MinimizeBtn"
-    minimizeBtn.Size = UDim2.new(0, 12, 0, 12)
-    minimizeBtn.Position = UDim2.new(0, 18, 0, 0)
-    minimizeBtn.BackgroundColor3 = colors.minimize
-    minimizeBtn.BorderSizePixel = 0
-    minimizeBtn.Text = ""
-    minimizeBtn.Parent = controlsContainer
-    
-    local minimizeCorner = Instance.new("UICorner")
-    minimizeCorner.CornerRadius = UDim.new(0.5, 0)
-    minimizeCorner.Parent = minimizeBtn
     
     -- Maximize Button (Green)
-    local maximizeBtn = Instance.new("TextButton")
-    maximizeBtn.Name = "MaximizeBtn"
-    maximizeBtn.Size = UDim2.new(0, 12, 0, 12)
-    maximizeBtn.Position = UDim2.new(0, 36, 0, 0)
-    maximizeBtn.BackgroundColor3 = colors.maximize
-    maximizeBtn.BorderSizePixel = 0
-    maximizeBtn.Text = ""
-    maximizeBtn.Parent = controlsContainer
-    
-    local maximizeCorner = Instance.new("UICorner")
-    maximizeCorner.CornerRadius = UDim.new(0.5, 0)
-    maximizeCorner.Parent = maximizeBtn
     
     return controlsContainer
 end
@@ -454,37 +414,13 @@ function FruitSelection.CreateUI()
     MainFrame.BackgroundColor3 = colors.background
     MainFrame.BorderSizePixel = 0
     MainFrame.Parent = ScreenGui
-    
-    originalSize = MainFrame.Size
-    minimizedSize = UDim2.new(0, 600, 0, 60)
-    
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, 12)
-    corner.Parent = MainFrame
-    
-    local stroke = Instance.new("UIStroke")
-    stroke.Color = colors.border
-    stroke.Thickness = 1
-    stroke.Parent = MainFrame
-    
+
     -- Window Controls
     local windowControls = createWindowControls(MainFrame)
     
     -- Title
-    local title = Instance.new("TextLabel")
-    title.Name = "Title"
-    title.Size = UDim2.new(1, -140, 0, 20)
-    title.Position = UDim2.new(0, 100, 0, 12)
-    title.BackgroundTransparency = 1
-    title.Text = "Fruit Selection"
-    title.TextSize = 14
-    title.Font = Enum.Font.GothamSemibold
-    title.TextColor3 = colors.text
-    title.TextXAlignment = Enum.TextXAlignment.Center
-    title.Parent = MainFrame
-    
+
     -- Search Bar
-    local searchBar = createSearchBar(MainFrame)
     
     -- Content Area
     local content = Instance.new("Frame")
@@ -528,31 +464,6 @@ function FruitSelection.CreateUI()
         end
         ScreenGui:Destroy()
         ScreenGui = nil
-    end)
-    
-    minimizeBtn.MouseButton1Click:Connect(function()
-        if isMinimized then
-            MainFrame.Size = originalSize
-            content.Visible = true
-            searchBar.Visible = true
-            isMinimized = false
-        else
-            MainFrame.Size = minimizedSize
-            content.Visible = false
-            searchBar.Visible = false
-            isMinimized = true
-        end
-    end)
-    
-    maximizeBtn.MouseButton1Click:Connect(function()
-        -- Toggle between normal and full size
-        if MainFrame.Size == originalSize then
-            MainFrame.Size = UDim2.new(0.8, 0, 0.8, 0)
-            MainFrame.Position = UDim2.new(0.1, 0, 0.1, 0)
-        else
-            MainFrame.Size = originalSize
-            MainFrame.Position = UDim2.new(0.5, -300, 0.5, -200)
-        end
     end)
     
     -- Dragging - Fixed to work properly
