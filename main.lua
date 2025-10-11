@@ -1734,7 +1734,7 @@ if ae then af.UICorner=26 end
 
 if not ae then
 af.UIElements.FullScreen=ab("Frame",{
-ZIndex=999,
+ZIndex=1,
 BackgroundTransparency=1,
 BackgroundColor3=Color3.fromHex"#000000",
 Size=UDim2.new(1,0,1,0),
@@ -1756,7 +1756,7 @@ BackgroundColor3="Dialog",
 AutomaticSize="Y",
 BackgroundTransparency=1,
 Visible=false,
-ZIndex=99999,
+ZIndex=1,
 },{
 ab("UIPadding",{
 PaddingTop=UDim.new(0,af.UIPadding),
@@ -1777,7 +1777,7 @@ AutomaticSize="XY",
 ThemeTag={
 ImageColor3="Dialog"
 },
-ZIndex=9999,
+ZIndex=1,
 },{
 
 
@@ -2607,7 +2607,7 @@ CornerRadius=UDim.new(0,8),
 ac("Frame",{
 BackgroundTransparency=1,
 Size=UDim2.fromScale(1,1),
-ZIndex=2,
+ZIndex=1,
 },{
 
 
@@ -3222,7 +3222,7 @@ BackgroundTransparency=1,
 Position=UDim2.new(1,0,0,0),
 AnchorPoint=Vector2.new(1,0),
 Parent=ag,
-ZIndex=999,
+ZIndex=1,
 Active=true,
 })
 
@@ -3239,7 +3239,7 @@ Position=UDim2.new(0.5,0,0.5,0),
 AnchorPoint=Vector2.new(0.5,0.5),
 BackgroundTransparency=1,
 Active=true,
-ZIndex=999,
+ZIndex=1,
 Parent=ak,
 })
 
@@ -3864,7 +3864,7 @@ AutomaticSize="X",
 Parent=ak,
 Active=false,
 BackgroundTransparency=.25,
-ZIndex=99,
+ZIndex=1,
 BackgroundColor3=Color3.new(0,0,0),
 },{
 
@@ -4496,7 +4496,7 @@ Size=UDim2.new(1,af.UIPadding*2,1,af.UIPadding*2),
 BackgroundTransparency=1,
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.new(0.5,0,0.5,0),
-ZIndex=9999999,
+ZIndex=1,
 })
 
 local ar,as=ac(af.UICorner,"Squircle",{
@@ -6998,7 +6998,7 @@ ImageColor3="Outline",
 },
 Size=UDim2.new(1,0,1,0),
 ImageTransparency=.85,
-ZIndex=99999,
+ZIndex=1,
 },{
 ae("UIGradient",{
 Rotation=45,
@@ -7064,7 +7064,7 @@ ImageColor3="Outline",
 },
 Size=UDim2.new(1,0,1,0),
 ImageTransparency=.85,
-ZIndex=99999,
+ZIndex=1,
 },{
 ae("UIGradient",{
 Rotation=60,
@@ -7094,7 +7094,7 @@ local aE=ae("Frame",{
 BackgroundColor3=aw.Default,
 Size=UDim2.fromScale(1,1),
 BackgroundTransparency=0,
-ZIndex=9,
+ZIndex=1,
 },{
 ae("UICorner",{
 CornerRadius=UDim.new(0,8),
@@ -7127,7 +7127,7 @@ ImageColor3="Outline",
 },
 Size=UDim2.new(1,0,1,0),
 ImageTransparency=.85,
-ZIndex=99999,
+ZIndex=1,
 },{
 ae("UIGradient",{
 Rotation=60,
@@ -7550,7 +7550,7 @@ Parent=at.ColorpickerFrame.UIElements.Main,
 Size=UDim2.new(0,30,0,30),
 AnchorPoint=Vector2.new(1,0),
 Position=UDim2.new(1,0,0,0),
-ZIndex=2
+ZIndex=1
 },nil,true)
 
 
@@ -8297,7 +8297,7 @@ Size=UDim2.new(1,0,1,0),
 BackgroundTransparency=1,
 Visible=false,
 Parent=Window.UIElements.MainBar,
-ZIndex=5,
+ZIndex=1,
 },{
 ao.UIElements.ContainerFrame,
 ag("Frame",{
@@ -8838,7 +8838,7 @@ ag("TextButton",{
 Size=UDim2.new(1,8,1,8),
 BackgroundTransparency=1,
 Active=true,
-ZIndex=999999999,
+ZIndex=1,
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.new(0.5,0,0.5,0),
 Text="",
@@ -8958,7 +8958,7 @@ Position=UDim2.new(0.5,0,0.5,0),
 AnchorPoint=Vector2.new(0.5,0.5),
 Visible=false,
 
-ZIndex=99999999,
+ZIndex=1,
 },{
 ag("UIScale",{
 Scale=.9,
@@ -9463,7 +9463,7 @@ local aw=ai.NewRoundFrame(ar.UICorner,"Squircle",{
 Size=UDim2.new(1,0,1,0),
 ImageTransparency=1,
 ImageColor3=Color3.new(0,0,0),
-ZIndex=98,
+ZIndex=1,
 Active=false,
 },{
 aj("ImageLabel",{
@@ -9482,7 +9482,7 @@ local ax=ai.NewRoundFrame(ar.UICorner,"Squircle",{
 Size=UDim2.new(1,0,1,0),
 ImageTransparency=1,
 ImageColor3=Color3.new(0,0,0),
-ZIndex=999,
+ZIndex=1,
 Active=false,
 })
 
@@ -9574,7 +9574,7 @@ BackgroundTransparency=1,
 ai.NewRoundFrame(ar.UICorner-(ar.UIPadding/2),"Squircle",{
 Size=UDim2.new(1,0,1,0),
 ImageColor3=Color3.new(1,1,1),
-ZIndex=3,
+ZIndex=1,
 ImageTransparency=.95,
 Name="Background",
 Visible=not ar.HidePanelBackground
@@ -9901,7 +9901,7 @@ BackgroundTransparency=1,
 Position=UDim2.new(0.5,0,0.5,0),
 AnchorPoint=Vector2.new(0.5,0.5),
 Active=true,
-ZIndex=99,
+ZIndex=1,
 Name="Frame",
 })
 })
@@ -9983,7 +9983,7 @@ BackgroundTransparency=1,
 Name="Main",
 
 Visible=false,
-ZIndex=97,
+ZIndex=1,
 },{
 aj("UICorner",{
 CornerRadius=UDim.new(0,ar.UICorner)
@@ -10122,7 +10122,7 @@ Size=UDim2.new(0,36,0,36),
 LayoutOrder=r or 999,
 Parent=ar.UIElements.Main.Main.Topbar.Right,
 
-ZIndex=9999,
+ZIndex=1,
 ThemeTag={
 ImageColor3="Text"
 },
