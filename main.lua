@@ -48,7 +48,7 @@ Language=string.match(g.SystemLocaleId,"^[a-z]+"),
 Request=http_request or(syn and syn.request)or request,
 DefaultProperties={
 ScreenGui={
-ResetOnSpawn=false,
+--ResetOnSpawn=false,
 --ZIndexBehavior="Sibling",
 },
 CanvasGroup={
@@ -10687,10 +10687,7 @@ function ar.Section(v,A)
 return r.New(A,ar.UIElements.SideBar.Frame,ar.Folder,aq.WindUI.UIScale,ar)
 end
 
-function ar.IsResizable(v,A)
-ar.Resizable=A
-ar.CanResize=A
-end
+
 
 function ar.Divider(v)
 local A=aj("Frame",{
