@@ -365,19 +365,18 @@ local function createItemCard(itemId, itemData, parent)
     
     -- Create Icon (ImageLabel for eggs, TextLabel for mutations)
     local icon
-    --if currentPage == "eggs" then
+    if currentPage == "eggs" then
         icon = Instance.new("ImageLabel")
         icon.Image = itemData.Icon
         icon.ScaleType = Enum.ScaleType.Fit
-    -- else
-    --     icon = Instance.new("TextLabel")
-    --     icon.Text = itemData.Icon
-    --     icon.TextSize = 32
-    --     icon.Font = Enum.Font.GothamBold
-    --     icon.TextColor3 = getRarityColor(itemData.Rarity)
-    -- end
+    else
+        icon = Instance.new("TextLabel")
+        icon.Text = itemData.Icon
+        icon.TextSize = 32
+        icon.Font = Enum.Font.GothamBold
+        icon.TextColor3 = getRarityColor(itemData.Rarity)
+    end
     
-    icon.ScaleType = Enum.ScaleType.Fit
     icon.Name = "Icon"
     icon.Size = UDim2.new(0, 50, 0, 50)
     icon.Position = UDim2.new(0.5, -25, 0.2, 0)
