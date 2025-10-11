@@ -507,6 +507,10 @@ function FruitSelection.CreateUI()
      gridLayout.CellPadding = UDim2.new(0, 8, 0, 8)
      gridLayout.SortOrder = Enum.SortOrder.LayoutOrder
      gridLayout.Parent = scrollFrame
+
+    gridLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+	scrollFrame.CanvasSize = UDim2.new(0, 0, 0, gridLayout.AbsoluteContentSize.Y + 20)
+    end)
      
      -- Add UIPadding to ensure proper scrolling
      local padding = Instance.new("UIPadding")
