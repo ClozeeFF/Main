@@ -15,99 +15,120 @@ local FruitData = {
     Strawberry = {
         Name = "Strawberry",
         Price = "5,000",
-        Icon = "🍓",
-        Rarity = 1,
+        Icon = "",
+        Rarity = 1, -- Common gray
         FeedValue = 600
     },
     Blueberry = {
         Name = "Blueberry",
         Price = "20,000",
-        Icon = "🫐",
-        Rarity = 1,
+        Icon = "",
+        Rarity = 1, -- Common gray
         FeedValue = 1250
     },
     Watermelon = {
         Name = "Watermelon",
         Price = "80,000",
-        Icon = "🍉",
-        Rarity = 2,
+        Icon = "",
+        Rarity = 2, -- Uncommon blue
         FeedValue = 3200
     },
     Apple = {
         Name = "Apple",
         Price = "400,000",
-        Icon = "🍎",
-        Rarity = 2,
+        Icon = "",
+        Rarity = 2, -- Uncommon blue
         FeedValue = 8000
     },
     Orange = {
         Name = "Orange",
         Price = "1,200,000",
-        Icon = "🍊",
-        Rarity = 3,
+        Icon = "",
+        Rarity = 3, -- Rare purple
         FeedValue = 20000
     },
     Corn = {
         Name = "Corn",
         Price = "3,500,000",
-        Icon = "🌽",
-        Rarity = 3,
+        Icon = "",
+        Rarity = 3, -- Rare purple
         FeedValue = 50000
     },
     Banana = {
         Name = "Banana",
         Price = "12,000,000",
-        Icon = "🍌",
-        Rarity = 4,
+        Icon = "",
+        Rarity = 4, -- Epic Orange
         FeedValue = 120000
     },
     Grape = {
         Name = "Grape",
         Price = "50,000,000",
-        Icon = "🍇",
-        Rarity = 4,
+        Icon = "",
+        Rarity = 4, -- Epic Orange
         FeedValue = 300000
     },
     Pear = {
         Name = "Pear",
         Price = "200,000,000",
-        Icon = "🍐",
-        Rarity = 5,
+        Icon = "",
+        Rarity = 5, -- Legendary red
         FeedValue = 800000
     },
     Pineapple = {
         Name = "Pineapple",
         Price = "600,000,000",
-        Icon = "🍍",
-        Rarity = 5,
+        Icon = "",
+        Rarity = 5, -- Legendary red
         FeedValue = 1500000
+    },
+    DragonFruit = {
+        Name = "Dragon Fruit",
+        Price = "1,500,000,000",
+        Icon = "",
+        Rarity = 6, -- Ultra pink
+        FeedValue = 3000000
     },
     GoldMango = {
         Name = "Gold Mango",
         Price = "2,000,000,000",
-        Icon = "🥭",
-        Rarity = 6,
+        Icon = "",
+        Rarity = 6, -- Ultra pink
         FeedValue = 4000000
     },
     BloodstoneCycad = {
         Name = "Bloodstone Cycad",
         Price = "8,000,000,000",
-        Icon = "🌿",
-        Rarity = 6,
+        Icon = "",
+        Rarity = 6, -- Ultra pink
         FeedValue = 5000000
     },
     ColossalPinecone = {
         Name = "Colossal Pinecone",
         Price = "40,000,000,000",
-        Icon = "🌲",
-        Rarity = 6,
+        Icon = "",
+        Rarity = 6, -- Ultra pink
         FeedValue = 8000000
     },
     VoltGinkgo = {
         Name = "Volt Ginkgo",
         Price = "80,000,000,000",
-        Icon = "⚡",
-        Rarity = 6,
+        Icon = "rbxassetid://99295754220451",
+        Rarity = 6, -- Ultra pink
+        FeedValue = 20000000
+    },
+    DeepseaPearlFruit = {
+        Name = "Deepsea Pearl Fruit",
+        Price = "40,000,000,000",
+        Icon = "rbxassetid://138006073602099",
+        Rarity = 6, -- Ultra pink
+        FeedValue = 8000000
+    },
+    Durian = {
+        Name = "Durian",
+        Price = "80,000,000,000",
+        Icon = "rbxassetid://123714847647315",
+        Rarity = 6, -- Ultra pink
         FeedValue = 20000000
     }
 }
@@ -294,12 +315,13 @@ local function createItemCard(itemId, itemData, parent)
     stroke.Parent = card
     
     -- Create Icon (TextLabel for emoji)
-    local icon = Instance.new("TextLabel")
+    local icon = Instance.new("ImageLabel")
     icon.Name = "Icon"
     icon.Size = UDim2.new(0, 50, 0, 50)
     icon.Position = UDim2.new(0.5, -25, 0.2, 0)
     icon.BackgroundTransparency = 1
-    icon.Text = itemData.Icon
+    icon.Image = itemData.Icon
+    icon.ScaleType = Enum.ScaleType.Fit
     icon.TextSize = 32
     icon.Font = Enum.Font.GothamBold
     icon.TextColor3 = getRarityColor(itemData.Rarity)

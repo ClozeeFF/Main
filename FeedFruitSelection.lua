@@ -26,62 +26,104 @@ local FruitData = {
 	Strawberry = {
 		Name = "Strawberry",
 		Price = "5,000",
-		Icon = "🍓",
-		Rarity = 1
+		Icon = "",
+		Rarity = 1 -- Common gray
 	},
 	Blueberry = {
 		Name = "Blueberry", 
 		Price = "20,000",
-		Icon = "🔵",
-		Rarity = 1
+		Icon = "",
+		Rarity = 1 -- Common gray
 	},
 	Watermelon = {
 		Name = "Watermelon",
 		Price = "80,000", 
-		Icon = "🍉",
-		Rarity = 2
+		Icon = "",
+		Rarity = 2 -- Uncommon blue
 	},
 	Apple = {
 		Name = "Apple",
 		Price = "400,000",
-		Icon = "🍎", 
-		Rarity = 2
+		Icon = "", 
+		Rarity = 2 -- Uncommon blue
 	},
 	Orange = {
 		Name = "Orange",
 		Price = "1,200,000",
-		Icon = "🍊",
-		Rarity = 3
+		Icon = "",
+		Rarity = 3 -- Rare purple
 	},
 	Corn = {
 		Name = "Corn",
 		Price = "3,500,000",
-		Icon = "🌽",
-		Rarity = 3
+		Icon = "",
+		Rarity = 3 -- Rare purple
 	},
 	Banana = {
 		Name = "Banana",
 		Price = "12,000,000",
-		Icon = "🍌",
-		Rarity = 4
+		Icon = "",
+		Rarity = 4 -- Epic Orange
 	},
 	Grape = {
 		Name = "Grape",
 		Price = "50,000,000",
-		Icon = "🍇",
-		Rarity = 4
+		Icon = "",
+		Rarity = 4 -- Epic Orange
 	},
 	Pear = {
 		Name = "Pear",
 		Price = "200,000,000",
-		Icon = "🍐",
-		Rarity = 5
+		Icon = "",
+		Rarity = 5 -- Legendary red
 	},
-	Peach = {
-		Name = "Peach",
+	PineApple = {
+		Name = "PineApple",
 		Price = "1,000,000,000",
-		Icon = "🍑",
-		Rarity = 5
+		Icon = "",
+		Rarity = 5 -- Legendary red
+	},
+	DragonFruit = {
+		Name = "Dragon Fruit",
+		Price = "1,500,000,000",
+		Icon = "",
+		Rarity = 6 -- Ultra pink
+	},
+	GoldMango = {
+		Name = "Gold Mango",
+		Price = "2,000,000,000",
+		Icon = "",
+		Rarity = 6 -- Ultra pink
+	},
+	BloodstoneCycad = {
+		Name = "Bloodstone Cycad",
+		Price = "8,000,000,000",
+		Icon = "",
+		Rarity = 6 -- Ultra pink
+	},
+	ColossalPinecone = {
+		Name = "Colossal Pinecone",
+		Price = "40,000,000,000",
+		Icon = "",
+		Rarity = 6 -- Ultra pink
+	},
+	VoltGinkgo = {
+		Name = "Volt Ginkgo",
+		Price = "80,000,000,000",
+		Icon = "rbxassetid://99295754220451",
+		Rarity = 6 -- Ultra pink
+	},
+	DeepseaPearlFruit = {
+		Name = "Deepsea Pearl Fruit",
+		Price = "40,000,000,000",
+		Icon = "rbxassetid://138006073602099",
+		Rarity = 6 -- Ultra pink
+	},
+	Durian = {
+		Name = "Durian",
+		Price = "80,000,000,000",
+		Icon = "rbxassetid://123714847647315",
+		Rarity = 6 -- Ultra pink
 	}
 }
 
@@ -352,12 +394,13 @@ local function createItemCard(itemId, itemData, parent)
     stroke.Parent = card
     
     -- Create Icon (TextLabel for fruits)
-    local icon = Instance.new("TextLabel")
+    local icon = Instance.new("ImageLabel")
     icon.Name = "Icon"
     icon.Size = UDim2.new(0, 50, 0, 50)
     icon.Position = UDim2.new(0.5, -25, 0.2, 0)
     icon.BackgroundTransparency = 1
-    icon.Text = itemData.Icon
+    icon.Image = itemData.Icon
+    icon.ScaleType = Enum.ScaleType.Fit
     icon.TextSize = 32
     icon.Font = Enum.Font.GothamBold
     icon.TextColor3 = getRarityColor(itemData.Rarity)
