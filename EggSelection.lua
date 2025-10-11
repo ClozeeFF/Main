@@ -370,11 +370,9 @@ local function createItemCard(itemId, itemData, parent)
         icon.Image = itemData.Icon
         icon.ScaleType = Enum.ScaleType.Fit
     else
-        icon = Instance.new("TextLabel")
-        icon.Text = itemData.Icon
-        icon.TextSize = 32
-        icon.Font = Enum.Font.GothamBold
-        icon.TextColor3 = getRarityColor(itemData.Rarity)
+        icon = Instance.new("ImageLabel")
+        icon.Image = itemData.Icon
+        icon.ScaleType = Enum.ScaleType.Fit
     end
     
     icon.Name = "Icon"
