@@ -394,16 +394,14 @@ local function createItemCard(itemId, itemData, parent)
     stroke.Parent = card
     
     -- Create Icon (TextLabel for fruits)
-    local icon = Instance.new("ImageLabel")
+    local icon
+	icon = Instance.new("ImageLabel")
+	icon.Image = itemData.Icon
+	icon.ScaleType = Enum.ScaleType.Fit
     icon.Name = "Icon"
     icon.Size = UDim2.new(0, 50, 0, 50)
     icon.Position = UDim2.new(0.5, -25, 0.2, 0)
     icon.BackgroundTransparency = 1
-    icon.Image = itemData.Icon
-    icon.ScaleType = Enum.ScaleType.Fit
-    icon.TextSize = 32
-    icon.Font = Enum.Font.GothamBold
-    icon.TextColor3 = getRarityColor(itemData.Rarity)
     icon.Parent = card
     
     local name = Instance.new("TextLabel")
