@@ -14,97 +14,6 @@ local FruitData = {
         Icon = "🍓",
         Rarity = 1,
         FeedValue = 600
-    },
-    Blueberry = {
-        Name = "Blueberry",
-        Price = "20,000",
-        Icon = "🫐",
-        Rarity = 1,
-        FeedValue = 1250
-    },
-    Watermelon = {
-        Name = "Watermelon",
-        Price = "80,000",
-        Icon = "🍉",
-        Rarity = 2,
-        FeedValue = 3200
-    },
-    Apple = {
-        Name = "Apple",
-        Price = "400,000",
-        Icon = "🍎",
-        Rarity = 2,
-        FeedValue = 8000
-    },
-    Orange = {
-        Name = "Orange",
-        Price = "1,200,000",
-        Icon = "🍊",
-        Rarity = 3,
-        FeedValue = 20000
-    },
-    Corn = {
-        Name = "Corn",
-        Price = "3,500,000",
-        Icon = "🌽",
-        Rarity = 3,
-        FeedValue = 50000
-    },
-    Banana = {
-        Name = "Banana",
-        Price = "12,000,000",
-        Icon = "🍌",
-        Rarity = 4,
-        FeedValue = 120000
-    },
-    Grape = {
-        Name = "Grape",
-        Price = "50,000,000",
-        Icon = "🍇",
-        Rarity = 4,
-        FeedValue = 300000
-    },
-    Pear = {
-        Name = "Pear",
-        Price = "200,000,000",
-        Icon = "🍐",
-        Rarity = 5,
-        FeedValue = 800000
-    },
-    Pineapple = {
-        Name = "Pineapple",
-        Price = "600,000,000",
-        Icon = "🍍",
-        Rarity = 5,
-        FeedValue = 1500000
-    },
-    GoldMango = {
-        Name = "Gold Mango",
-        Price = "2,000,000,000",
-        Icon = "🥭",
-        Rarity = 6,
-        FeedValue = 4000000
-    },
-    BloodstoneCycad = {
-        Name = "Bloodstone Cycad",
-        Price = "8,000,000,000",
-        Icon = "🌿",
-        Rarity = 6,
-        FeedValue = 5000000
-    },
-    ColossalPinecone = {
-        Name = "Colossal Pinecone",
-        Price = "40,000,000,000",
-        Icon = "🌲",
-        Rarity = 6,
-        FeedValue = 8000000
-    },
-    VoltGinkgo = {
-        Name = "Volt Ginkgo",
-        Price = "80,000,000,000",
-        Icon = "⚡",
-        Rarity = 6,
-        FeedValue = 20000000
     }
 }
 
@@ -217,22 +126,11 @@ local function filterDataBySearch(data, searchText)
 end
 
 -- Create macOS Style Window Controls
-local function createWindowControls(parent)
-    local controlsContainer = Instance.new("Frame")
-    controlsContainer.Name = "WindowControls"
-    controlsContainer.Size = UDim2.new(0, 70, 0, 12)
-    controlsContainer.Position = UDim2.new(0, 12, 0, 12)
-    controlsContainer.BackgroundTransparency = 1
-    controlsContainer.Parent = parent
-    
     -- Close Button (Red)
 
     -- Minimize Button (Yellow)
     
     -- Maximize Button (Green)
-    
-    return controlsContainer
-end
 
 -- Create Item Card (macOS style)
 local function createItemCard(itemId, itemData, parent)
@@ -343,59 +241,6 @@ local function createItemCard(itemId, itemData, parent)
 end
 
 -- Create Search Bar (macOS style)
-local function createSearchBar(parent)
-    local searchContainer = Instance.new("Frame")
-    searchContainer.Name = "SearchContainer"
-    searchContainer.Size = UDim2.new(1, -32, 0, 32)
-    searchContainer.Position = UDim2.new(0, 16, 0, 60)
-    searchContainer.BackgroundColor3 = colors.surface
-    searchContainer.BorderSizePixel = 0
-    searchContainer.Parent = parent
-    
-    local searchCorner = Instance.new("UICorner")
-    searchCorner.CornerRadius = UDim.new(0, 8)
-    searchCorner.Parent = searchContainer
-    
-    local searchStroke = Instance.new("UIStroke")
-    searchStroke.Color = colors.border
-    searchStroke.Thickness = 1
-    searchStroke.Parent = searchContainer
-    
-    local searchIcon = Instance.new("TextLabel")
-    searchIcon.Name = "SearchIcon"
-    searchIcon.Size = UDim2.new(0, 16, 0, 16)
-    searchIcon.Position = UDim2.new(0, 12, 0.5, -8)
-    searchIcon.BackgroundTransparency = 1
-    searchIcon.Text = "🔍"
-    searchIcon.TextSize = 12
-    searchIcon.Font = Enum.Font.Gotham
-    searchIcon.TextColor3 = colors.textSecondary
-    searchIcon.Parent = searchContainer
-    
-    local searchBox = Instance.new("TextBox")
-    searchBox.Name = "SearchBox"
-    searchBox.Size = UDim2.new(1, -44, 0.8, 0)
-    searchBox.Position = UDim2.new(0, 36, 0.1, 0)
-    searchBox.BackgroundTransparency = 1
-    searchBox.Text = ""
-    searchBox.PlaceholderText = "Search fruits..."
-    searchBox.TextSize = 14
-    searchBox.Font = Enum.Font.Gotham
-    searchBox.TextColor3 = colors.text
-    searchBox.TextXAlignment = Enum.TextXAlignment.Left
-    searchBox.ClearTextOnFocus = false
-    searchBox.Parent = searchContainer
-    
-    -- Search functionality
-    searchBox.Changed:Connect(function(prop)
-        if prop == "Text" then
-            searchText = searchBox.Text
-            FruitSelection.RefreshContent()
-        end
-    end)
-    
-    return searchContainer
-end
 
 -- Create UI
 function FruitSelection.CreateUI()
@@ -423,56 +268,14 @@ function FruitSelection.CreateUI()
     -- Search Bar
     
     -- Content Area
-    local content = Instance.new("Frame")
-    content.Name = "Content"
-    content.Size = UDim2.new(1, -32, 1, -120)
-    content.Position = UDim2.new(0, 16, 0, 120)
-    content.BackgroundTransparency = 1
-    content.Parent = MainFrame
-    
-    local scrollFrame = Instance.new("ScrollingFrame")
-    scrollFrame.Name = "ScrollFrame"
-    scrollFrame.Size = UDim2.new(1, 0, 1, 0)
-    scrollFrame.BackgroundTransparency = 1
-    scrollFrame.ScrollBarThickness = 6
-    scrollFrame.ScrollBarImageColor3 = colors.primary
-    scrollFrame.Parent = content
-    
-         local gridLayout = Instance.new("UIGridLayout")
-     gridLayout.CellSize = UDim2.new(0.33, -8, 0, 120)
-     gridLayout.CellPadding = UDim2.new(0, 8, 0, 8)
-     gridLayout.SortOrder = Enum.SortOrder.LayoutOrder
-     gridLayout.Parent = scrollFrame
 
-    gridLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-	scrollFrame.CanvasSize = UDim2.new(0, 0, 0, gridLayout.AbsoluteContentSize.Y + 20)
-    end)
-     
-     -- Add UIPadding to ensure proper scrolling
-     local padding = Instance.new("UIPadding")
-     padding.PaddingBottom = UDim.new(0, 8)
-     padding.Parent = scrollFrame
+
     
     -- Window Control Events
-    local closeBtn = windowControls.CloseBtn
-    local minimizeBtn = windowControls.MinimizeBtn
-    local maximizeBtn = windowControls.MaximizeBtn
-    
-    closeBtn.MouseButton1Click:Connect(function()
-        if onToggleChanged then
-            onToggleChanged(false)
-        end
-        ScreenGui:Destroy()
-        ScreenGui = nil
-    end)
+
     
     -- Dragging - Fixed to work properly
-    local titleBar = Instance.new("Frame")
-    titleBar.Name = "TitleBar"
-    titleBar.Size = UDim2.new(1, 0, 0, 40)
-    titleBar.Position = UDim2.new(0, 0, 0, 0)
-    titleBar.BackgroundTransparency = 1
-    titleBar.Parent = MainFrame
+
     
     titleBar.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
