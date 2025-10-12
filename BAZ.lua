@@ -1,4 +1,4 @@
-﻿local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -23,7 +23,7 @@ local function waitForSettingsReady(extraDelay)
     while not settingsLoaded do
         task.wait(0.1)
     end
-    if extraDelay and extraDelay > 0 then
+    if extraDelay then
         task.wait(extraDelay)
     end
 end
@@ -42,15 +42,15 @@ local Window = WindUI:CreateWindow({
     Theme = "Dark",
 	Resizable = false,
 })
-	-- Minimize
-	Window:SetToggleKey(Enum.KeyCode.LeftControl)
+-- 	-- Minimize
+-- 	Window:SetToggleKey(Enum.KeyCode.LeftControl)
 
-	-- Disable Topbar Buttons
-	Window:DisableTopbarButtons({
-    --"Minimize", 
-    "Fullscreen",
-})
-	Window:LockAll()
+-- 	-- Disable Topbar Buttons
+-- 	Window:DisableTopbarButtons({
+--     --"Minimize", 
+--     "Fullscreen",
+-- })
+-- 	Window:LockAll()
 --==================================================================================
 
 local Tabs = {
@@ -2919,19 +2919,19 @@ local autoDeleteToggle = Tabs.PlaceTab:Toggle({
 
 
 -- Enhanced Open Button UI
--- Window:EditOpenButton({
---     Title = "Build A Zoo",
---     Icon = "monitor",
---     CornerRadius = UDim.new(0,16),
---     StrokeThickness = 2,
---     Color = ColorSequence.new( -- gradient
---         Color3.fromHex("FF0F7B"), 
---         Color3.fromHex("F89B29")
---     ),
---     OnlyMobile = false,
---     Enabled = true,
---     Draggable = true,
--- })
+Window:EditOpenButton({
+    Title = "Build A Zoo",
+    Icon = "monitor",
+    CornerRadius = UDim.new(0,16),
+    StrokeThickness = 2,
+    Color = ColorSequence.new( -- gradient
+        Color3.fromHex("FF0F7B"), 
+        Color3.fromHex("F89B29")
+    ),
+    OnlyMobile = false,
+    Enabled = true,
+    Draggable = true,
+})
 
 -- Close callback
 Window:OnClose(function()
