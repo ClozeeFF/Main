@@ -48,7 +48,7 @@ local Window = WindUI:CreateWindow({
 	-- Disable Topbar Buttons
 	Window:DisableTopbarButtons({
     --"Minimize", 
-    "Fullscreen",
+    "Fullscreen"
 })
 	Window:LockAll()
 --==================================================================================
@@ -3858,4 +3858,5 @@ end
 
 -- Function removed - using WindUI config system instead
 -- Function removed - using WindUI config system instead
+
 
