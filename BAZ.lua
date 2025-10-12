@@ -42,15 +42,15 @@ local Window = WindUI:CreateWindow({
     Theme = "Dark",
 	Resizable = false,
 })
--- 	-- Minimize
--- 	Window:SetToggleKey(Enum.KeyCode.LeftControl)
+ 	-- Minimize
+	Window:SetToggleKey(Enum.KeyCode.LeftControl)
 
--- 	-- Disable Topbar Buttons
--- 	Window:DisableTopbarButtons({
---     --"Minimize", 
---     "Fullscreen",
--- })
--- 	Window:LockAll()
+	-- Disable Topbar Buttons
+	Window:DisableTopbarButtons({
+    --"Minimize", 
+    "Fullscreen",
+})
+	Window:LockAll()
 --==================================================================================
 
 local Tabs = {
@@ -3858,3 +3858,4 @@ end
 
 -- Function removed - using WindUI config system instead
 -- Function removed - using WindUI config system instead
+
