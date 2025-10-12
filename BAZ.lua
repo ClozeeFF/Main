@@ -1,4 +1,5 @@
-﻿local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local CollectionService = game:GetService("CollectionService")
@@ -22,11 +23,10 @@ local function waitForSettingsReady(extraDelay)
     while not settingsLoaded do
         task.wait(0.1)
     end
-    if extraDelay then
+    if extraDelay and extraDelay > 0 then
         task.wait(extraDelay)
     end
 end
-
 local autoFeedToggle
 --==================================================================================
 
