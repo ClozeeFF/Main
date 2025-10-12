@@ -123,13 +123,13 @@ local EggData = {
     UnicornProEgg = {
         Name = "Unicorn Pro Egg",
         Price = "50,000,000,000",
-        Icon = "rbxassetid://123427249205445",
+        Icon = "rbxassetid://101660420624990",
         Rarity = 6 -- Ultra pink
     },
     GeneralKongEgg = {
         Name = "General Kong Egg",
         Price = "80,000,000,000",
-        Icon = "rbxassetid://113910587565739",
+        Icon = "rbxassetid://122824204814998",
         Rarity = 6 -- Ultra pink
     }
     -- Wait Update
@@ -138,22 +138,22 @@ local EggData = {
 local MutationData = {
     Golden = {
         Name = "Golden",
-        Icon = "",
+        Icon = "rbxassetid://127002529028834",
         Rarity = 10
     },
     Diamond = {
         Name = "Diamond", 
-        Icon = "",
+        Icon = "rbxassetid://121197098708770",
         Rarity = 20
     },
     Electirc = {
         Name = "Electric",
-        Icon = "",
+        Icon = "rbxassetid://117484832890686",
         Rarity = 50
     },
     Fire = {
         Name = "Fire",
-        Icon = "",
+        Icon = "rbxassetid://83433633155964",
         Rarity = 100
     },
     Jurassic = {

@@ -15,98 +15,98 @@ local FruitData = {
     Strawberry = {
         Name = "Strawberry",
         Price = "5,000",
-        Icon = "",
+        Icon = "rbxassetid://104374626973721",
         Rarity = 1, -- Common gray
         FeedValue = 600
     },
     Blueberry = {
         Name = "Blueberry",
         Price = "20,000",
-        Icon = "",
+        Icon = "rbxassetid://97438631309014",
         Rarity = 1, -- Common gray
         FeedValue = 1250
     },
     Watermelon = {
         Name = "Watermelon",
         Price = "80,000",
-        Icon = "",
+        Icon = "rbxassetid://79653136233598",
         Rarity = 2, -- Uncommon blue
         FeedValue = 3200
     },
     Apple = {
         Name = "Apple",
         Price = "400,000",
-        Icon = "",
+        Icon = "rbxassetid://113077547158461",
         Rarity = 2, -- Uncommon blue
         FeedValue = 8000
     },
     Orange = {
         Name = "Orange",
         Price = "1,200,000",
-        Icon = "",
+        Icon = "rbxassetid://117435260195128",
         Rarity = 3, -- Rare purple
         FeedValue = 20000
     },
     Corn = {
         Name = "Corn",
         Price = "3,500,000",
-        Icon = "",
+        Icon = "rbxassetid://121983109556651",
         Rarity = 3, -- Rare purple
         FeedValue = 50000
     },
     Banana = {
         Name = "Banana",
         Price = "12,000,000",
-        Icon = "",
+        Icon = "rbxassetid://98064934042900",
         Rarity = 4, -- Epic Orange
         FeedValue = 120000
     },
     Grape = {
         Name = "Grape",
         Price = "50,000,000",
-        Icon = "",
+        Icon = "rbxassetid://136677855525681",
         Rarity = 4, -- Epic Orange
         FeedValue = 300000
     },
     Pear = {
         Name = "Pear",
         Price = "200,000,000",
-        Icon = "",
+        Icon = "rbxassetid://127212627437903",
         Rarity = 5, -- Legendary red
         FeedValue = 800000
     },
     Pineapple = {
         Name = "Pineapple",
         Price = "600,000,000",
-        Icon = "",
+        Icon = "rbxassetid://98675740070597",
         Rarity = 5, -- Legendary red
         FeedValue = 1500000
     },
     DragonFruit = {
         Name = "Dragon Fruit",
         Price = "1,500,000,000",
-        Icon = "",
+        Icon = "rbxassetid://122248678318515",
         Rarity = 6, -- Ultra pink
         FeedValue = 3000000
     },
     GoldMango = {
         Name = "Gold Mango",
         Price = "2,000,000,000",
-        Icon = "",
+        Icon = "rbxassetid://131082228805214",
         Rarity = 6, -- Ultra pink
         FeedValue = 4000000
     },
     BloodstoneCycad = {
         Name = "Bloodstone Cycad",
         Price = "8,000,000,000",
-        Icon = "",
+        Icon = "rbxassetid://100520330646486",
         Rarity = 6, -- Ultra pink
         FeedValue = 5000000
     },
     ColossalPinecone = {
         Name = "Colossal Pinecone",
         Price = "40,000,000,000",
-        Icon = "",
+        Icon = "rbxassetid://122294532551162",
         Rarity = 6, -- Ultra pink
         FeedValue = 8000000
     },

@@ -1,4 +1,4 @@
-local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+﻿local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -48,7 +48,7 @@ local Window = WindUI:CreateWindow({
 	-- Disable Topbar Buttons
 	Window:DisableTopbarButtons({
     --"Minimize", 
-    "Fullscreen"
+    "Fullscreen",
 })
 	Window:LockAll()
 --==================================================================================
@@ -1603,8 +1603,8 @@ local EggData = {
     UltraEgg = { Name = "Ultra Egg", Price = "10,000,000,000", Icon = "rbxassetid://83909590718799", Rarity = 6 },
 	SaberCubEgg = { Name = "Saber Cub Egg", Price = "40,000,000,000", Icon = "rbxassetid://100166022742233", Rarity = 6 },
 	UnicornEgg = { Name = "Unicorn Egg", Price = "40,000,000,000", Icon = "rbxassetid://123427249205445", Rarity = 6 },
-	UnicornProEgg = { Name = "Unicorn Pro Egg", Price = "50,000,000,000", Icon = "rbxassetid://123427249205445", Rarity = 6 },
-    GeneralKongEgg = { Name = "General Kong Egg", Price = "80,000,000,000", Icon = "rbxassetid://113910587565739", Rarity = 6 }
+	UnicornProEgg = { Name = "Unicorn Pro Egg", Price = "50,000,000,000", Icon = "rbxassetid://101660420624990", Rarity = 6 },
+    GeneralKongEgg = { Name = "General Kong Egg", Price = "80,000,000,000", Icon = "rbxassetid://122824204814998", Rarity = 6 }
 }
 
 local MutationData = {
@@ -3858,5 +3858,3 @@ end
 
 -- Function removed - using WindUI config system instead
 -- Function removed - using WindUI config system instead
-
-

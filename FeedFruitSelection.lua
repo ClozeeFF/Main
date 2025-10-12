@@ -26,85 +26,85 @@ local FruitData = {
 	Strawberry = {
 		Name = "Strawberry",
 		Price = "5,000",
-		Icon = "",
+		Icon = "rbxassetid://104374626973721",
 		Rarity = 1 -- Common gray
 	},
 	Blueberry = {
 		Name = "Blueberry", 
 		Price = "20,000",
-		Icon = "",
+		Icon = "rbxassetid://97438631309014",
 		Rarity = 1 -- Common gray
 	},
 	Watermelon = {
 		Name = "Watermelon",
 		Price = "80,000", 
-		Icon = "",
+		Icon = "rbxassetid://79653136233598",
 		Rarity = 2 -- Uncommon blue
 	},
 	Apple = {
 		Name = "Apple",
 		Price = "400,000",
-		Icon = "", 
+		Icon = "rbxassetid://113077547158461", 
 		Rarity = 2 -- Uncommon blue
 	},
 	Orange = {
 		Name = "Orange",
 		Price = "1,200,000",
-		Icon = "",
+		Icon = "rbxassetid://117435260195128",
 		Rarity = 3 -- Rare purple
 	},
 	Corn = {
 		Name = "Corn",
 		Price = "3,500,000",
-		Icon = "",
+		Icon = "rbxassetid://121983109556651",
 		Rarity = 3 -- Rare purple
 	},
 	Banana = {
 		Name = "Banana",
 		Price = "12,000,000",
-		Icon = "",
+		Icon = "rbxassetid://98064934042900",
 		Rarity = 4 -- Epic Orange
 	},
 	Grape = {
 		Name = "Grape",
 		Price = "50,000,000",
-		Icon = "",
+		Icon = "rbxassetid://136677855525681",
 		Rarity = 4 -- Epic Orange
 	},
 	Pear = {
 		Name = "Pear",
 		Price = "200,000,000",
-		Icon = "",
+		Icon = "rbxassetid://127212627437903",
 		Rarity = 5 -- Legendary red
 	},
 	PineApple = {
 		Name = "PineApple",
 		Price = "1,000,000,000",
-		Icon = "",
+		Icon = "rbxassetid://98675740070597",
 		Rarity = 5 -- Legendary red
 	},
 	DragonFruit = {
 		Name = "Dragon Fruit",
 		Price = "1,500,000,000",
-		Icon = "",
+		Icon = "rbxassetid://122248678318515",
 		Rarity = 6 -- Ultra pink
 	},
 	GoldMango = {
 		Name = "Gold Mango",
 		Price = "2,000,000,000",
-		Icon = "",
+		Icon = "rbxassetid://131082228805214",
 		Rarity = 6 -- Ultra pink
 	},
 	BloodstoneCycad = {
 		Name = "Bloodstone Cycad",
 		Price = "8,000,000,000",
-		Icon = "",
+		Icon = "rbxassetid://100520330646486",
 		Rarity = 6 -- Ultra pink
 	},
 	ColossalPinecone = {
 		Name = "Colossal Pinecone",
 		Price = "40,000,000,000",
-		Icon = "",
+		Icon = "rbxassetid://122294532551162",
 		Rarity = 6 -- Ultra pink
 	},
 	VoltGinkgo = {
