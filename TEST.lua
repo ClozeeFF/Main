@@ -1,10 +1,18 @@
--- loader_encrypted.lua
--- Lucy Loader: ดาวน์โหลดไฟล์ .enc จาก GitHub, XOR ถอดรหัส, ตรวจสอบ key/hwid/expire, แจ้งเตือน, save key, load main
+-- loader_encrypted.lua (fixed & complete)
+-- Lucy Loader: ดาวน์โหลดไฟล์ .enc จาก GitHub, Base64 decode -> XOR ถอดรหัส, ตรวจสอบ key/hwid/expire, แจ้งเตือน, save key, load main
 
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer or Players:GetPlayers()[1]
-local hwiduser = game:GetService("RbxAnalyticsService"):GetClientId()
+
+-- try to get HWID, but wrap in pcall because some environments may not provide it
+local hwiduser = ""
+pcall(function()
+    local ok, id = pcall(function()
+        return game:GetService("RbxAnalyticsService"):GetClientId()
+    end)
+    if ok and id then hwiduser = tostring(id) end
+end)
 
 -- ========== CONFIG ==========
 -- เปลี่ยนสอง URL นี้ไปยัง raw GitHub ของไฟล์ที่เข้ารหัส (.enc)
@@ -17,8 +25,8 @@ local SECRET_KEY = "MySecretKey123"
 
 -- ฟังก์ชันช่วย: XOR ถอดรหัสจาก string ของ byte
 local function xor_decrypt_bytes(enc_str, key)
-    -- enc_str เป็น raw string (byte values)
-    local out = {}
+    if not enc_str or #enc_str == 0 then return "" end
+    local out = table.create(#enc_str)
     local klen = #key
     for i = 1, #enc_str do
         local byte = string.byte(enc_str, i)
@@ -28,26 +36,38 @@ local function xor_decrypt_bytes(enc_str, key)
     return table.concat(out)
 end
 
--- ดาวน์โหลดและถอดรหัสไฟล์ .enc เป็น plain string (pcheck)
-local function fetch_and_decrypt(url)
-    local ok, res = pcall(function() return game:HttpGet(url) end)
+-- ดาวน์โหลดและถอดรหัสไฟล์ .enc เป็น plain string
+-- คาดว่าไฟล์บน GitHub เป็น base64 ของ (XOR-encrypted-bytes)
+local function fetch_and_decrypt(url, key)
+    local ok, res = pcall(function() return HttpService:GetAsync(url) end)
     if not ok then
-        warn("[Lucy Loader] Failed to HttpGet:", url, res)
+        warn("[Lucy Loader] Failed to GetAsync:", url, res)
         return nil, res
     end
-    local success, dec = pcall(function()
-        return xor_decrypt_bytes(res, SECRET_KEY)
-    end)
-    if not success then
-        warn("[Lucy Loader] Decrypt failed:", dec)
-        return nil, dec
+
+    -- base64 decode (ถ้า remote เป็น base64)
+    local ok2, bytes = pcall(function() return HttpService:Base64Decode(res) end)
+    if not ok2 then
+        -- ถ้า Base64Decode ล้มเหลว ให้พยายามใช้ raw response (บางโฮสต์อาจส่ง binary/raw)
+        warn("[Lucy Loader] Base64 decode failed, using raw response:", bytes)
+        bytes = res
     end
-    return dec
+
+    -- XOR decrypt bytes using provided key
+    local status, plaintext = pcall(function()
+        return xor_decrypt_bytes(bytes, key)
+    end)
+    if not status then
+        warn("[Lucy Loader] XOR decrypt failed:", plaintext)
+        return nil, plaintext
+    end
+
+    return plaintext
 end
 
 -- โหลดและ parse config JSON ที่ถูกถอดรหัส
 local function load_config()
-    local dec, err = fetch_and_decrypt(CONFIG_URL)
+    local dec, err = fetch_and_decrypt(CONFIG_URL, SECRET_KEY)
     if not dec then
         warn("[Lucy Loader] Cannot fetch/decrypt config:", err)
         return nil
@@ -64,7 +84,7 @@ end
 local function checkKeyPair(data, enteredKey, hwid)
     if not data or not data.keys then return false, "no_data" end
     for _, pair in ipairs(data.keys) do
-        if pair.key == enteredKey and pair.hwid == hwid then
+        if tostring(pair.key) == tostring(enteredKey) and tostring(pair.hwid) == tostring(hwid) then
             local expire = tostring(pair.expire or "permanent")
             if string.lower(expire) == "permanent" then
                 return true, "permanent"
@@ -88,14 +108,15 @@ end
 
 -- ฟังก์ชันโหลดสคริปต์หลัก (BAZ) หลังถอดรหัส
 local function load_main_from_github()
-    local decBaz, err = fetch_and_decrypt(BAZ_URL)
+    local decBaz, err = fetch_and_decrypt(BAZ_URL, SECRET_KEY)
     if not decBaz then
         warn("[Lucy Loader] Failed to fetch/decrypt BAZ:", err)
         return
     end
-    -- ถ้า BAZ.lua มี dependence บางอย่าง ให้รันใน pcall
     local ok, e = pcall(function()
-        loadstring(decBaz)()
+        local fn, loadErr = load(decBaz)
+        if not fn then error(loadErr) end
+        fn()
     end)
     if not ok then
         warn("[Lucy Loader] Error running BAZ:", e)
@@ -105,8 +126,10 @@ end
 -- ฟังก์ชันแสดง notice หมดอายุในเกม
 local function showExpireNotice(expire)
     if not expire or string.lower(expire) == "permanent" then return end
-    local notice = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+    local playerGui = player:FindFirstChild("PlayerGui") or player:WaitForChild("PlayerGui")
+    local notice = Instance.new("ScreenGui")
     notice.Name = "Lucy_ExpireNotice"
+    notice.Parent = playerGui
 
     local label = Instance.new("TextLabel", notice)
     label.Size = UDim2.new(0, 260, 0, 36)
@@ -128,12 +151,18 @@ local function showExpireNotice(expire)
     end)
 end
 
--- เตรียมโฟลเดอร์เก็บ key local
-if makefolder and not isfolder("LucySystem") then
+-- เตรียมโฟลเดอร์เก็บ key local (รองรับ executor ที่มีฟังก์ชันเหล่านี้)
+if makefolder and isfolder and not isfolder("LucySystem") then
     pcall(makefolder, "LucySystem")
 end
 local savePath = "LucySystem/Key.txt"
-local savedKey = (isfile and isfile(savePath)) and readfile(savePath) or nil
+local savedKey = nil
+if isfile then
+    local ok, content = pcall(function() return readfile(savePath) end)
+    if ok and content and #content > 0 then
+        savedKey = content
+    end
+end
 
 -- เริ่มโหลด config
 local config = load_config()
@@ -162,7 +191,8 @@ if savedKey then
 end
 
 -- สร้าง UI ให้กรอก key ถ้ายังไม่มี key ที่ใช้ได้
-local screen = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+local playerGui = player:FindFirstChild("PlayerGui") or player:WaitForChild("PlayerGui")
+local screen = Instance.new("ScreenGui", playerGui)
 screen.Name = "Lucy_KeySystem"
 
 local frame = Instance.new("Frame", screen)
@@ -203,6 +233,51 @@ button.TextColor3 = Color3.fromRGB(255, 255, 255)
 button.Font = Enum.Font.GothamSemibold
 button.TextSize = 16
 Instance.new("UICorner", button).CornerRadius = UDim.new(0, 6)
+
+-- === เพิ่มปุ่ม Get HWID (คัดลอก hwid ไปที่ clipboard) ===
+local getBtn = Instance.new("TextButton", frame)
+getBtn.Size = UDim2.new(0, 90, 0, 28)
+getBtn.Position = UDim2.new(1, -102, 0, 8) -- มุมขวาบนของ frame
+getBtn.Text = "Get HWID"
+getBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+getBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+getBtn.Font = Enum.Font.GothamSemibold
+getBtn.TextSize = 13
+Instance.new("UICorner", getBtn).CornerRadius = UDim.new(0, 6)
+
+-- ฟังก์ชันคัดลอก HWID ไป clipboard (ถ้า executor รองรับ)
+local function copyHWIDToClipboard()
+    local ok, err = pcall(function()
+        if setclipboard then
+            setclipboard(hwiduser)
+        else
+            error("setclipboard not available")
+        end
+    end)
+
+    if ok then
+        getBtn.Text = "Copied!"
+        print("[Lucy Loader] HWID copied to clipboard:", hwiduser)
+        task.delay(1.5, function()
+            if getBtn and getBtn.Parent then
+                getBtn.Text = "Get HWID"
+            end
+        end)
+    else
+        warn("[Lucy Loader] Cannot copy HWID to clipboard:", err)
+        -- fallback: แสดง HWID ชั่วคราวเป็น placeholder ใน textbox เพื่อให้ผู้ใช้กดคัดลอกด้วยมือ
+        local prev = box.PlaceholderText
+        box.PlaceholderText = hwiduser
+        task.delay(6, function()
+            if box and box.Parent then
+                box.PlaceholderText = prev
+            end
+        end)
+    end
+end
+
+getBtn.MouseButton1Click:Connect(copyHWIDToClipboard)
+-- === จบส่วน Get HWID ===
 
 local function checkAndLogin()
     local enteredKey = box.Text
