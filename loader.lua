@@ -1,62 +1,76 @@
--- Lucy Loader v1.1 (with Key UI)
--- โหลด TEST.lua จาก GitHub หลังจากใส่ key ถูกต้อง
+-- Lucy Loader v2.0 (Key System from GitHub)
+-- ดึง key.json จาก GitHub และตรวจ key ก่อนโหลด TEST.lua
 
+local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer or Players:GetPlayers()[1]
 
--- 🔑 Key ที่ต้องใช้
-local VALID_KEY = "LucyTestKey123"
+-- 🔗 URLs (ปรับให้ตรงกับ repo ของคุณ)
+local KEY_URL  = "https://raw.githubusercontent.com/ClozeeFF/Main/main/key.json"
+local MAIN_URL = "https://raw.githubusercontent.com/ClozeeFF/Main/main/TEST.lua"
 
--- 🔗 URL ของสคริปต์หลัก (TEST.lua)
-local MAIN_SCRIPT_URL = "https://raw.githubusercontent.com/ClozeeFF/Main/refs/heads/main/TEST.lua"
-
--- ฟังก์ชันโหลดและรัน TEST.lua
-local function load_main_script()
-    print("[Lucy Loader] Fetching TEST.lua...")
-    local ok, data = pcall(function()
-        return game:HttpGet(MAIN_SCRIPT_URL)
+-- โหลด key.json จาก GitHub
+local function fetch_keys()
+    local ok, res = pcall(function()
+        return game:HttpGet(KEY_URL)
     end)
-    if not ok or not data or data == "" then
-        warn("[Lucy Loader] Failed to download main script:", data)
-        return
+    if not ok or not res then
+        warn("[Lucy Loader] ❌ Cannot download key.json:", res)
+        return {}
     end
-    print("[Lucy Loader] Running TEST.lua...")
-    local success, err = pcall(function()
-        loadstring(data)()
+    local success, data = pcall(function()
+        return HttpService:JSONDecode(res)
     end)
-    if not success then
-        warn("[Lucy Loader] Error while running TEST.lua:", err)
+    if success and data and data.keys then
+        print("[Lucy Loader] ✅ Loaded keys from GitHub (" .. #data.keys .. ")")
+        return data.keys
     else
-        print("[Lucy Loader] ✅ Script executed successfully!")
+        warn("[Lucy Loader] ⚠️ JSON decode failed")
+        return {}
     end
 end
 
--- UI: Key Input
-local screen = Instance.new("ScreenGui")
-screen.Name = "Lucy_KeyUI"
-screen.ResetOnSpawn = false
-screen.Parent = player:WaitForChild("PlayerGui")
+-- โหลดและรัน TEST.lua
+local function load_main_script()
+    print("[Lucy Loader] Fetching TEST.lua...")
+    local ok, code = pcall(function()
+        return game:HttpGet(MAIN_URL)
+    end)
+    if not ok or not code or code == "" then
+        warn("[Lucy Loader] ❌ Failed to get TEST.lua:", code)
+        return
+    end
+    local run_ok, err = pcall(function()
+        loadstring(code)()
+    end)
+    if not run_ok then
+        warn("[Lucy Loader] ⚠️ Script Error:", err)
+    else
+        print("[Lucy Loader] ✅ TEST.lua executed successfully!")
+    end
+end
 
-local frame = Instance.new("Frame")
+-- สร้าง UI สำหรับกรอก key
+local screen = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+screen.Name = "Lucy_KeyUI"
+
+local frame = Instance.new("Frame", screen)
 frame.Size = UDim2.new(0, 300, 0, 160)
 frame.Position = UDim2.new(0.5, -150, 0.5, -80)
 frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 frame.BorderSizePixel = 0
-frame.Parent = screen
-
 local corner = Instance.new("UICorner", frame)
 corner.CornerRadius = UDim.new(0, 12)
 
-local title = Instance.new("TextLabel")
+local title = Instance.new("TextLabel", frame)
 title.Size = UDim2.new(1, 0, 0, 40)
-title.BackgroundTransparency = 1
 title.Text = "🔑 Enter Access Key"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
 title.Font = Enum.Font.GothamSemibold
 title.TextSize = 18
-title.TextColor3 = Color3.fromRGB(255, 255, 255)
-title.Parent = frame
+title.BackgroundTransparency = 1
 
-local box = Instance.new("TextBox")
+local box = Instance.new("TextBox", frame)
 box.Size = UDim2.new(1, -40, 0, 40)
 box.Position = UDim2.new(0, 20, 0, 50)
 box.PlaceholderText = "Your key here..."
@@ -66,11 +80,9 @@ box.TextColor3 = Color3.fromRGB(255, 255, 255)
 box.Font = Enum.Font.Gotham
 box.TextSize = 16
 box.ClearTextOnFocus = true
-box.Parent = frame
-
 Instance.new("UICorner", box).CornerRadius = UDim.new(0, 8)
 
-local button = Instance.new("TextButton")
+local button = Instance.new("TextButton", frame)
 button.Size = UDim2.new(1, -40, 0, 36)
 button.Position = UDim2.new(0, 20, 0, 100)
 button.Text = "Unlock"
@@ -78,42 +90,54 @@ button.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
 button.TextColor3 = Color3.fromRGB(255, 255, 255)
 button.Font = Enum.Font.GothamSemibold
 button.TextSize = 16
-button.Parent = frame
-
 Instance.new("UICorner", button).CornerRadius = UDim.new(0, 8)
 
--- แจ้งเตือน (UI ข้อความชั่วคราว)
-local function showNotice(msg, color)
-    local notice = Instance.new("TextLabel")
-    notice.Size = UDim2.new(0, 240, 0, 30)
-    notice.Position = UDim2.new(0.5, -120, 0, -40)
-    notice.BackgroundColor3 = color or Color3.fromRGB(40, 40, 40)
-    notice.TextColor3 = Color3.new(1, 1, 1)
-    notice.Font = Enum.Font.GothamSemibold
-    notice.TextSize = 14
-    notice.Text = msg
-    notice.Parent = frame
-    notice.BackgroundTransparency = 0.15
-    Instance.new("UICorner", notice).CornerRadius = UDim.new(0, 6)
+-- UI แจ้งเตือน
+local function showNotice(text, color)
+    local n = Instance.new("TextLabel", frame)
+    n.Size = UDim2.new(0, 240, 0, 30)
+    n.Position = UDim2.new(0.5, -120, 0, -35)
+    n.BackgroundColor3 = color or Color3.fromRGB(40, 40, 40)
+    n.TextColor3 = Color3.new(1, 1, 1)
+    n.Font = Enum.Font.GothamSemibold
+    n.TextSize = 14
+    n.Text = text
+    n.BackgroundTransparency = 0.15
+    Instance.new("UICorner", n).CornerRadius = UDim.new(0, 6)
     task.delay(2.5, function()
-        if notice and notice.Parent then notice:Destroy() end
+        if n and n.Parent then n:Destroy() end
     end)
 end
 
--- เมื่อกดปุ่ม Unlock
+-- ตรวจ key เมื่อคลิกปุ่ม
 button.MouseButton1Click:Connect(function()
-    local key = box.Text
-    if key == "" then
-        showNotice("⚠️ Please enter your key!", Color3.fromRGB(150, 80, 0))
+    local enteredKey = box.Text
+    if enteredKey == "" then
+        showNotice("⚠️ Please enter your key!", Color3.fromRGB(180, 120, 0))
         return
     end
-    if key == VALID_KEY then
-        showNotice("✅ Key verified!", Color3.fromRGB(0, 180, 70))
+
+    button.Text = "Checking..."
+    button.Active = false
+
+    local validKeys = fetch_keys()
+    local matched = false
+    for _, k in ipairs(validKeys) do
+        if k == enteredKey then
+            matched = true
+            break
+        end
+    end
+
+    if matched then
+        showNotice("✅ Key verified!", Color3.fromRGB(0, 200, 90))
         task.wait(1)
         screen:Destroy()
         load_main_script()
     else
-        showNotice("❌ Invalid key!", Color3.fromRGB(180, 50, 50))
+        showNotice("❌ Invalid key!", Color3.fromRGB(200, 50, 50))
+        button.Text = "Unlock"
+        button.Active = true
         box.Text = ""
     end
 end)
