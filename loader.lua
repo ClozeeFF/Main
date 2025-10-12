@@ -7,7 +7,7 @@ local player = Players.LocalPlayer or Players:GetPlayers()[1]
 
 -- 🔗 URLs (ปรับให้ตรงกับ repo ของคุณ)
 local KEY_URL  = "https://raw.githubusercontent.com/ClozeeFF/Main/main/key.json"
-local MAIN_URL = "https://raw.githubusercontent.com/ClozeeFF/Main/main/TEST.lua"
+local MAIN_URL = "https://raw.githubusercontent.com/ClozeeFF/Main/main/BAZ.lua"
 
 -- โหลด key.json จาก GitHub
 local function fetch_keys()
