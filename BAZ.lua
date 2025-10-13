@@ -45,18 +45,32 @@ local Window = WindUI:CreateWindow({
     -- No keysystem
 })
 
-local Tabs = {}
-Tabs.MainSection = Window:Section({ Title = "🤖 Auto Helpers", Opened = true })
-Tabs.AutoTab = Tabs.MainSection:Tab({ Title = "🥚 | Buy Eggs"})
-Tabs.PlaceTab = Tabs.MainSection:Tab({ Title = "🏠 | Place Pets"})
-Tabs.HatchTab = Tabs.MainSection:Tab({ Title = "⚡ | Hatch Eggs"})
-Tabs.ClaimTab = Tabs.MainSection:Tab({ Title = "💰 | Get Money"})
-Tabs.ShopTab = Tabs.MainSection:Tab({ Title = "🛒 | Shop"})
-Tabs.PackTab = Tabs.MainSection:Tab({ Title = "🎁 | Get Packs"})
-Tabs.FruitTab = Tabs.MainSection:Tab({ Title = "🍎 | Fruit Store"})
-Tabs.FeedTab = Tabs.MainSection:Tab({ Title = "🍽️ | Auto Feed"})
--- Bug tab removed per user request
-Tabs.SaveTab = Tabs.MainSection:Tab({ Title = "💾 | Save Settings"})
+local Tabs = {
+	AutoTab		= Window:Tab ({ Title = "🥚 | ซื้อไข่ ออโต้ ✅"}),
+	PlaceTab	= Window:Tab ({ Title = "🏠 | วาง ออโต้ ✅"}),
+	HatchTab	= Window:Tab ({ Title = "⚡ | ฟักไข่ ออโต้ ✅"}),
+	ClaimTab	= Window:Tab ({ Title = "💰 | เก็บตัง ออโต้ ✅"}),
+	FruitTab	= Window:Tab ({ Title = "🍎 | ซื้อผลไม้ ออโต้ ✅"}),
+	FeedTab		= Window:Tab ({ Title = "🍽️ | ให้ผลไม้ ออโต้ ✅"}),
+	ShopTab		= Window:Tab ({ Title = "🛒 | ซื้อสายพาน ออโต้ ✅"}),
+	Animation	= Window:Tab ({ Title = "🎥 | แก้เกมส์แลค ✅"}),
+	SaveTab		= Window:Tab ({ Title = "💾 | เซฟ ออฟชั่น ✅"})
+}
+
+-- local Dialog = Window:Dialog({
+--     Icon = "bird",
+--     Title = "_BAZ scripts",
+--     Content = "Update v1.0",
+--     Buttons = {
+--         {
+--             Title = "Confirm",
+--             Callback = function()
+--                 print("Confirmed!")
+--             end,
+--         },
+--     },
+-- })
+--==================================================================================
 
 -- Function to load all saved settings before any function starts
 local function loadAllSettings()
@@ -70,7 +84,8 @@ local function loadAllSettings()
             warn("Failed to load WindUI config: " .. tostring(loadErr))
         end
     end
-    
+    --==================================================================================
+
     -- Load custom selection variables from JSON files
     local success, data = pcall(function()
         if isfile("Zebux_EggSelections.json") then
@@ -78,7 +93,8 @@ local function loadAllSettings()
             return game:GetService("HttpService"):JSONDecode(jsonData)
         end
     end)
-    
+    --==================================================================================
+
     if success and data then
         selectedTypeSet = {}
         if data.eggs then
@@ -86,7 +102,8 @@ local function loadAllSettings()
                 selectedTypeSet[eggId] = true
             end
         end
-        
+    --==================================================================================
+
         selectedMutationSet = {}
         if data.mutations then
             for _, mutationId in ipairs(data.mutations) do
@@ -94,7 +111,8 @@ local function loadAllSettings()
             end
         end
     end
-    
+    --==================================================================================
+
     -- Load fruit selections
     local fruitSuccess, fruitData = pcall(function()
         if isfile("Zebux_FruitSelections.json") then
@@ -102,7 +120,8 @@ local function loadAllSettings()
             return game:GetService("HttpService"):JSONDecode(jsonData)
         end
     end)
-    
+    --==================================================================================
+
     if fruitSuccess and fruitData then
         selectedFruits = {}
         if fruitData.fruits then
@@ -111,7 +130,8 @@ local function loadAllSettings()
             end
         end
     end
-    
+    --==================================================================================
+
     -- Load feed fruit selections
     local feedFruitSuccess, feedFruitData = pcall(function()
         if isfile("Zebux_FeedFruitSelections.json") then
@@ -119,7 +139,8 @@ local function loadAllSettings()
             return game:GetService("HttpService"):JSONDecode(jsonData)
         end
     end)
-    
+    --==================================================================================
+
     if feedFruitSuccess and feedFruitData then
         selectedFeedFruits = {}
         if feedFruitData.fruits then
@@ -128,7 +149,8 @@ local function loadAllSettings()
             end
         end
     end
-    
+    --==================================================================================
+
     -- Load auto place selections
     local autoPlaceSuccess, autoPlaceData = pcall(function()
         if isfile("Zebux_AutoPlaceSelections.json") then
@@ -136,7 +158,7 @@ local function loadAllSettings()
             return game:GetService("HttpService"):JSONDecode(jsonData)
         end
     end)
-    
+    --==================================================================================
     if autoPlaceSuccess and autoPlaceData then
         if autoPlaceData.eggTypes then
             selectedEggTypes = autoPlaceData.eggTypes
@@ -146,9 +168,10 @@ local function loadAllSettings()
         end
     end
 end
+	--==================================================================================
 
--- Function to save all settings (WindUI config + custom selections)
-local function saveAllSettings()
+	-- Function to save all settings (WindUI config + custom selections)
+	local function saveAllSettings()
     -- Save WindUI config for simple UI elements
     if zebuxConfig then
         local saveSuccess, saveErr = pcall(function()
@@ -159,72 +182,61 @@ local function saveAllSettings()
             warn("Failed to save WindUI config: " .. tostring(saveErr))
         end
     end
-    
+    --==================================================================================
+
     -- Save custom selection variables to JSON files
-    local eggSelections = {
-        eggs = {},
-        mutations = {}
-    }
-    
+    local eggSelections = { eggs = {} ,mutations = {} }
     for eggId, _ in pairs(selectedTypeSet) do
         table.insert(eggSelections.eggs, eggId)
     end
-    
     for mutationId, _ in pairs(selectedMutationSet) do
         table.insert(eggSelections.mutations, mutationId)
     end
-    
+    --==================================================================================
+
     -- Save auto place selections
-    local autoPlaceSelections = {
-        eggTypes = selectedEggTypes,
-        mutations = selectedMutations
-    }
-    
+    local autoPlaceSelections = { eggTypes = selectedEggTypes, mutations = selectedMutations } 
     pcall(function()
         writefile("Zebux_AutoPlaceSelections.json", game:GetService("HttpService"):JSONEncode(autoPlaceSelections))
     end)
-    
     pcall(function()
         writefile("Zebux_EggSelections.json", game:GetService("HttpService"):JSONEncode(eggSelections))
     end)
-    
+    --==================================================================================
+
     -- Save fruit selections
-    local fruitSelections = {
-        fruits = {}
-    }
-    
+    local fruitSelections = { fruits = {} }
     for fruitId, _ in pairs(selectedFruits) do
         table.insert(fruitSelections.fruits, fruitId)
     end
-    
     pcall(function()
         writefile("Zebux_FruitSelections.json", game:GetService("HttpService"):JSONEncode(fruitSelections))
     end)
-    
+    --==================================================================================
+
     -- Save feed fruit selections
-    local feedFruitSelections = {
-        fruits = {}
-    }
-    
+    local feedFruitSelections = { fruits = {} }
     for fruitId, _ in pairs(selectedFeedFruits) do
         table.insert(feedFruitSelections.fruits, fruitId)
     end
-    
     pcall(function()
         writefile("Zebux_FeedFruitSelections.json", game:GetService("HttpService"):JSONEncode(feedFruitSelections))
     end)
 end
+--==================================================================================
 
 -- Auto state variables (declared early so close handler can reference)
-
 local autoFeedEnabled = false
 local autoPlaceEnabled = false
 local autoPlaceThread = nil
-local autoHatchEnabled = false
 local antiAFKEnabled = false
 local antiAFKConnection = nil
 local autoHatchThread = nil
--- Priority system removed per user request
+
+local antiAnimation = false
+local PetModel = false
+local CoinClaim = false
+--==================================================================================
 
 -- Egg config loader
 local eggConfig = {}
@@ -244,8 +256,9 @@ local function loadEggConfig()
         eggConfig = {}
     end
 end
-
+--==================================================================================
 local idToTypeMap = {}
+
 local function loadConveyorConfig()
     local ok, cfg = pcall(function()
         local cfgFolder = ReplicatedStorage:WaitForChild("Config")
@@ -258,7 +271,7 @@ local function loadConveyorConfig()
         conveyorConfig = {}
     end
 end
-
+--==================================================================================
 local function loadPetFoodConfig()
     local ok, cfg = pcall(function()
         local cfgFolder = ReplicatedStorage:WaitForChild("Config")
@@ -271,7 +284,7 @@ local function loadPetFoodConfig()
         petFoodConfig = {}
     end
 end
-
+--==================================================================================
 local function loadMutationConfig()
     local ok, cfg = pcall(function()
         local cfgFolder = ReplicatedStorage:WaitForChild("Config")
@@ -284,6 +297,7 @@ local function loadMutationConfig()
         mutationConfig = {}
     end
 end
+--==================================================================================
 local function getTypeFromConfig(key, val)
     if type(val) == "table" then
         local t = val.Type or val.Name or val.type or val.name
@@ -291,7 +305,7 @@ local function getTypeFromConfig(key, val)
     end
     return tostring(key)
 end
-
+--==================================================================================
 local function buildEggIdList()
     idToTypeMap = {}
     local ids = {}
@@ -306,7 +320,7 @@ local function buildEggIdList()
     table.sort(ids)
     return ids
 end
-
+--==================================================================================
 local function buildMutationList()
     local mutations = {}
     for id, val in pairs(mutationConfig) do
@@ -322,7 +336,7 @@ local function buildMutationList()
     table.sort(mutations)
     return mutations
 end
-
+--==================================================================================
 -- UI helpers
 local function tryCreateTextInput(parent, opts)
     -- Tries common method names to create a textbox-like input in WindUI
@@ -335,9 +349,9 @@ local function tryCreateTextInput(parent, opts)
     end
     return created
 end
+--==================================================================================
 
 -- Removed unused function caseInsensitiveContains
-
 local function getEggPriceById(eggId)
     local entry = eggConfig[eggId] or eggConfig[tonumber(eggId)]
     if entry == nil then
@@ -361,7 +375,7 @@ local function getEggPriceById(eggId)
     end
     return nil
 end
-
+--========================================================================
 local function getEggPriceByType(eggType)
     local target = tostring(eggType)
     for key, value in pairs(eggConfig) do
@@ -382,7 +396,7 @@ local function getEggPriceByType(eggType)
     end
     return nil
 end
-
+--========================================================================
 -- Player helpers
 local function getAssignedIslandName()
     if not LocalPlayer then return nil end
@@ -440,9 +454,9 @@ local function getEggMutation(eggUID)
     
     return nil
 end
+--========================================================================
 
 -- Player helpers (getAssignedIslandName moved earlier to fix undefined global error)
-
 local function getPlayerNetWorth()
     if not LocalPlayer then return 0 end
     local attrValue = LocalPlayer:GetAttribute("NetWorth")
@@ -867,9 +881,6 @@ local function isTileUnlocked(islandName, tilePosition)
     return true -- Tile is unlocked
 end
 
-
-
-
 local function getPetUID()
     if not LocalPlayer then return nil end
     
@@ -1056,12 +1067,12 @@ local function getPetInfo(petUID)
     
     return petData
 end
-
--- ============ Auto Claim Money ============
+--====================================
+-- Auto Claim Money
 local autoClaimEnabled = false
 local autoClaimThread = nil
-local autoClaimDelay = 0.1 -- seconds between claims
-
+local autoClaimDelay = 0.1
+--====================================
 local function getOwnedPetNames()
     local names = {}
     local playerGui = LocalPlayer and LocalPlayer:FindFirstChild("PlayerGui")
@@ -1083,7 +1094,6 @@ local function getOwnedPetNames()
     end
     return names
 end
-
 local function claimMoneyForPet(petName)
     if not petName or petName == "" then return false end
     local petsFolder = workspace:FindFirstChild("Pets")
@@ -1100,15 +1110,20 @@ local function claimMoneyForPet(petName)
     if not ok then warn("Claim failed for pet " .. tostring(petName) .. ": " .. tostring(err)) end
     return ok
 end
-
 local function runAutoClaim()
     while autoClaimEnabled do
         local ok, err = pcall(function()
             local names = getOwnedPetNames()
-            if #names == 0 then task.wait(0.8) return end
+            if #names == 0 then
+                task.wait(0.8)
+                return
+            end
             for _, n in ipairs(names) do
                 claimMoneyForPet(n)
                 task.wait(autoClaimDelay)
+                if not autoClaimEnabled then
+                    return
+                end
             end
         end)
         if not ok then
@@ -1117,48 +1132,59 @@ local function runAutoClaim()
         end
     end
 end
-
+--====================================
+local Slider = Tabs.ClaimTab:Slider({
+    Title = "⏰ หน่วงเวลา",
+    Desc = "หน่วงเวลาการเก็บเหรียญ (วินาที)",
+    Step = 0.1, -- กำหนดให้ขยับทีละ 1 วินาที
+    Value = {
+        Min = 0.1,
+        Max = 1,
+        Default = 0.2,
+    },
+    Callback = function(value)
+        -- อัปเดตค่า delay ให้ใช้ใน runAutoClaim()
+        autoClaimDelay = tonumber(value)
+    end
+})
+--====================================
 local autoClaimToggle = Tabs.ClaimTab:Toggle({
-    Title = "💰 Auto Get Money",
-    Desc = "Automatically collects money from your pets",
+    Title = "💰 เก็บเงินออโต้",
+    Desc = "เก็บเงินจากสัตว์เลี้ยงของคุณโดยอัตโนมัติ",
     Value = false,
     Callback = function(state)
         autoClaimEnabled = state
-        
-        waitForSettingsReady(0.2)
+        waitForSettingsReady(1)
+
         if state and not autoClaimThread then
             autoClaimThread = task.spawn(function()
                 runAutoClaim()
                 autoClaimThread = nil
             end)
-            WindUI:Notify({ Title = "💰 Auto Claim", Content = "Started collecting money! 🎉", Duration = 3 })
+            WindUI:Notify({
+                Title = "💰 เก็บเงินออโต้",
+                Content = "เริ่มเก็บเงิน! 🎉",
+                Duration = 3
+            })
         elseif (not state) and autoClaimThread then
-            WindUI:Notify({ Title = "💰 Auto Claim", Content = "Stopped", Duration = 3 })
+            autoClaimEnabled = false
+            autoClaimThread = nil
+            WindUI:Notify({
+                Title = "💰 เก็บเงินออโต้",
+                Content = "หยุดเก็บเงิน",
+                Duration = 3
+            })
         end
     end
 })
-
-
-
-local autoClaimDelaySlider = Tabs.ClaimTab:Slider({
-    Title = "⏰ Claim Speed",
-    Desc = "How fast to collect money (lower = faster)",
-    Default = 100,
-    Min = 0,
-    Max = 1000,
-    Rounding = 0,
-    Callback = function(value)
-        autoClaimDelay = math.clamp((tonumber(value) or 100) / 1000, 0, 2)
-    end
-})
-
+--====================================
 Tabs.ClaimTab:Button({
-    Title = "💰 Get All Money Now",
-    Desc = "Collect money from all pets right now",
+    Title = "💰 เก็บเงินทั้งหมดทันที",
+    Desc = "เก็บเงินจากสัตว์เลี้ยงทั้งหมดทันที",
     Callback = function()
         local names = getOwnedPetNames()
         if #names == 0 then
-            WindUI:Notify({ Title = "💰 Auto Claim", Content = "No pets found", Duration = 3 })
+            WindUI:Notify({ Title = "💰 เก็บเงินออโต้", Content = "ไม่พบสัตว์เลี้ยง", Duration = 3 })
             return
         end
         local count = 0
@@ -1166,9 +1192,47 @@ Tabs.ClaimTab:Button({
             if claimMoneyForPet(n) then count += 1 end
             task.wait(0.05)
         end
-        WindUI:Notify({ Title = "💰 Auto Claim", Content = string.format("Got money from %d pets! 🎉", count), Duration = 3 })
+        WindUI:Notify({ Title = "💰 เก็บเงินออโต้", Content = string.format("ได้เงินจากสัตว์เลี้ยง %d ตัว! 🎉", count), Duration = 3 })
     end
 })
+--====================================
+-- อนิเมชั่น เก็บเงิน
+AnimationCoindisable = function()
+	if CoinClaim then return end
+	CoinClaim = true
+	
+		task.spawn(function()
+			while  CoinClaim do
+			
+				local popupDrop = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PopupDrop")
+				if popupDrop then 
+				popupDrop:Destroy() 
+				end
+		
+			task.wait(300)
+			end
+		end)
+		
+	WindUI:Notify({ Title = "⛔ CoinClaim", Content = "ปิด CoinClaim", Duration = 3 })
+end
+disableAnimationCoin = function()
+    if not CoinClaim then return end
+    CoinClaim = false
+
+    WindUI:Notify({ Title = "⛔ CoinClaim", Content = "CoinClaim ถูกปิดไปแล้ว.", Duration = 3 })
+end
+Tabs.ClaimTab:Button({
+    Title = "⛔ AnimationCoin",
+    Desc = "ปิด อนิเมชั่นตัวเลข",
+    Callback = function()
+        if CoinClaim then
+            disableAnimationCoin()
+        else
+             AnimationCoindisable()
+        end
+    end
+})
+--====================================
 
 -- ============ Auto Hatch ============
 
@@ -1229,6 +1293,7 @@ local function isReadyText(text)
         local n = tonumber(num)
         if n and n >= 100 then return true end
     end
+
     -- Words that often mean ready
     local lower = string.lower(text)
     if string.find(lower, "hatch", 1, true) or string.find(lower, "ready", 1, true) then
@@ -1265,11 +1330,13 @@ local function collectOwnedEggs()
         -- No PlayerBuiltBlocks found
         return owned
     end
+
     for _, child in ipairs(container:GetChildren()) do
         if child:IsA("Model") and playerOwnsInstance(child) then
             table.insert(owned, child)
         end
     end
+
     -- also allow owned nested models (fallback)
     if #owned == 0 then
         for _, child in ipairs(container:GetDescendants()) do
@@ -1291,24 +1358,30 @@ end
 
 local function pressPromptE(prompt)
     if typeof(prompt) ~= "Instance" or not prompt:IsA("ProximityPrompt") then return false end
+
     -- Try executor helper first
     if _G and typeof(_G.fireproximityprompt) == "function" then
         local s = pcall(function() _G.fireproximityprompt(prompt, prompt.HoldDuration or 0) end)
         if s then return true end
     end
+
     -- Pure client fallback: simulate the prompt key with VirtualInput
     local key = prompt.KeyboardKeyCode
     if key == Enum.KeyCode.Unknown or key == nil then key = Enum.KeyCode.E end
+
     -- LoS and distance flexibility
     pcall(function()
         prompt.RequiresLineOfSight = false
         prompt.Enabled = true
     end)
+
     local hold = prompt.HoldDuration or 0
     VirtualInputManager:SendKeyEvent(true, key, false, game)
+
     if hold > 0 then task.wait(hold + 0.05) end
     VirtualInputManager:SendKeyEvent(false, key, false, game)
     return true
+
 end
 
 local function walkTo(position, timeout)
@@ -1335,9 +1408,11 @@ local function tryHatchModel(model)
             if inst.ActionText and string.len(inst.ActionText) > 0 then break end
         end
     end
+
     if not prompt then return false, "No prompt" end
     local pos = getModelPosition(model)
     if not pos then return false, "No position" end
+	
     walkTo(pos, 6)
     -- Ensure we are within MaxActivationDistance by nudging forward if necessary
     local hrp = Players.LocalPlayer.Character and Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
@@ -1350,46 +1425,52 @@ local function tryHatchModel(model)
     return ok
 end
 
+local autoHatchEnabled = false
+local autoHatchThread = nil
+
+-- ฟังก์ชันหลัก Auto Hatch
 local function runAutoHatch()
     while autoHatchEnabled do
-        -- Check priority - if Auto Place is running and has priority, pause hatching
-        -- Priority system removed
-        
+	if not autoHatchEnabled then break end  -- เช็ค state ก่อนเริ่มรอบใหม่
+
         local ok, err = pcall(function()
             local owned = collectOwnedEggs()
+			if not autoHatchEnabled then return end  -- เช็คก่อนทำต่อ
             if #owned == 0 then
-                task.wait(1.0)
+                task.wait(1)
                 return
             end
+
             local eggs = filterReadyEggs(owned)
+			if not autoHatchEnabled then return end
             if #eggs == 0 then
                 task.wait(0.8)
                 return
             end
-            -- Try nearest first
+
+            -- เรียงตามระยะทาง nearest first
             local me = getPlayerRootPosition()
             table.sort(eggs, function(a, b)
                 local pa = getModelPosition(a) or Vector3.new()
                 local pb = getModelPosition(b) or Vector3.new()
                 return (pa - me).Magnitude < (pb - me).Magnitude
             end)
+
             for _, m in ipairs(eggs) do
-                -- Check priority again before each hatch
-                -- Priority system removed
-                
+                if not autoHatchEnabled then break end
+
                 -- Moving to hatch
                 tryHatchModel(m)
                 task.wait(0.2)
             end
-            -- Done
         end)
+
         if not ok then
             warn("Auto Hatch error: " .. tostring(err))
             task.wait(1)
         end
     end
 end
-
 local autoHatchToggle = Tabs.HatchTab:Toggle({
     Title = "⚡ Auto Hatch Eggs",
     Desc = "Automatically hatches your eggs by walking to them",
@@ -1398,22 +1479,30 @@ local autoHatchToggle = Tabs.HatchTab:Toggle({
         autoHatchEnabled = state
         
         waitForSettingsReady(0.2)
-        if state and not autoHatchThread then
-            -- Check if Auto Place is running and we have lower priority
-            -- Priority system removed
-            autoHatchThread = task.spawn(function()
-                runAutoHatch()
+
+		if state then
+        -- เริ่ม thread ใหม่ถ้ายังไม่มี
+
+            if not autoHatchThread then
+                autoHatchThread = task.spawn(function()
+                    runAutoHatch()
+                    autoHatchThread = nil
+                end)
+
+            WindUI:Notify({
+                    Title = "⚡ Auto Hatch", Content = "Started hatching eggs! 🎉", Duration = 3 })
+            end
+        else
+            -- หยุดทันที
+            autoHatchEnabled = false
+            if autoHatchThread then
+                task.cancel(autoHatchThread)
                 autoHatchThread = nil
-            end)
-            WindUI:Notify({ Title = "⚡ Auto Hatch", Content = "Started hatching eggs! 🎉", Duration = 3 })
-        elseif (not state) and autoHatchThread then
+            end
             WindUI:Notify({ Title = "⚡ Auto Hatch", Content = "Stopped", Duration = 3 })
         end
     end
 })
-
-
-
 Tabs.HatchTab:Button({
     Title = "⚡ Hatch Nearest Egg",
     Desc = "Hatch the closest egg to you",
@@ -1493,41 +1582,42 @@ local EggData = {
     SuperRareEgg = { Name = "Super Rare Egg", Price = "2,500", Icon = "rbxassetid://93845452154351", Rarity = 2 },
     EpicEgg = { Name = "Epic Egg", Price = "15,000", Icon = "rbxassetid://116395645531721", Rarity = 2 },
     LegendEgg = { Name = "Legend Egg", Price = "100,000", Icon = "rbxassetid://90834918351014", Rarity = 3 },
+	SnowBunnyEgg = { Name = "Snow Bunny Egg", Price = "1,500,000", Icon = "rbxassetid://90834918351014", Rarity = 3 },
     PrismaticEgg = { Name = "Prismatic Egg", Price = "1,000,000", Icon = "rbxassetid://79960683434582", Rarity = 4 },
     HyperEgg = { Name = "Hyper Egg", Price = "2,500,000", Icon = "rbxassetid://104958288296273", Rarity = 4 },
+	DarkGoatyEgg = { Name = "Dark Goaty Egg", Price = "100,000,000", Icon = "rbxassetid://104958288296273", Rarity = 4 },
     VoidEgg = { Name = "Void Egg", Price = "24,000,000", Icon = "rbxassetid://122396162708984", Rarity = 5 },
     BowserEgg = { Name = "Bowser Egg", Price = "130,000,000", Icon = "rbxassetid://71500536051510", Rarity = 5 },
     DemonEgg = { Name = "Demon Egg", Price = "400,000,000", Icon = "rbxassetid://126412407639969", Rarity = 5 },
+	RhinoRockEgg = { Name = "Rhino Rock Egg", Price = "3,000,000,000", Icon = "rbxassetid://126412407639969", Rarity = 5 },
     CornEgg = { Name = "Corn Egg", Price = "1,000,000,000", Icon = "rbxassetid://94739512852461", Rarity = 5 },
     BoneDragonEgg = { Name = "Bone Dragon Egg", Price = "2,000,000,000", Icon = "rbxassetid://83209913424562", Rarity = 5 },
     UltraEgg = { Name = "Ultra Egg", Price = "10,000,000,000", Icon = "rbxassetid://83909590718799", Rarity = 6 },
-    DinoEgg = { Name = "Dino Egg", Price = "10,000,000,000", Icon = "rbxassetid://80783528632315", Rarity = 6 },
-    FlyEgg = { Name = "Fly Egg", Price = "999,999,999,999", Icon = "rbxassetid://109240587278187", Rarity = 6 },
-    UnicornEgg = { Name = "Unicorn Egg", Price = "40,000,000,000", Icon = "rbxassetid://123427249205445", Rarity = 6 },
-    AncientEgg = { Name = "Ancient Egg", Price = "999,999,999,999", Icon = "rbxassetid://113910587565739", Rarity = 6 }
+	SaberCubEgg = { Name = "Saber Cub Egg", Price = "40,000,000,000", Icon = "rbxassetid://100166022742233", Rarity = 6 },
+	UnicornEgg = { Name = "Unicorn Egg", Price = "40,000,000,000", Icon = "rbxassetid://123427249205445", Rarity = 6 },
+	UnicornProEgg = { Name = "Unicorn Pro Egg", Price = "50,000,000,000", Icon = "rbxassetid://101660420624990", Rarity = 6 },
+    GeneralKongEgg = { Name = "General Kong Egg", Price = "80,000,000,000", Icon = "rbxassetid://122824204814998", Rarity = 6 }
 }
 
 local MutationData = {
-    Golden = { Name = "Golden", Icon = "✨", Rarity = 10 },
-    Diamond = { Name = "Diamond", Icon = "💎", Rarity = 20 },
-    Electirc = { Name = "Electric", Icon = "⚡", Rarity = 50 },
-    Fire = { Name = "Fire", Icon = "🔥", Rarity = 100 },
-    Jurassic = { Name = "Jurassic", Icon = "🦕", Rarity = 100 }
+    Golden = { Name = "Golden", Icon = "rbxassetid://127002529028834", Rarity = 10 },
+    Diamond = { Name = "Diamond", Icon = "rbxassetid://121197098708770", Rarity = 20 },
+    Electirc = { Name = "Electric", Icon = "rbxassetid://117484832890686", Rarity = 50 },
+    Fire = { Name = "Fire", Icon = "rbxassetid://83433633155964", Rarity = 100 },
+    Jurassic = { Name = "Jurassic", Icon = "rbxassetid://98638255041927", Rarity = 100 },
+	Snow = { Name = "Snow", Icon = "rbxassetid://89211775178687", Rarity = 100 }
 }
 
 -- Load UI modules
-local EggSelection = loadstring(game:HttpGet("https://raw.githubusercontent.com/m0rgause/build-a-zoo/refs/heads/main/EggSelection.lua"))()
-local FruitSelection = loadstring(game:HttpGet("https://raw.githubusercontent.com/m0rgause/build-a-zoo/refs/heads/main/FruitSelection.lua"))()
-local FeedFruitSelection = loadstring(game:HttpGet("https://raw.githubusercontent.com/m0rgause/build-a-zoo/refs/heads/main/FeedFruitSelection.lua"))()
-local AutoFeedSystem = loadstring(game:HttpGet("https://raw.githubusercontent.com/m0rgause/build-a-zoo/refs/heads/main/AutoFeedSystem.lua"))()
--- FruitStoreSystem functions are now implemented locally in the auto buy fruit section
-local AutoQuestSystem = nil
+local EggSelection = loadstring(game:HttpGet("https://raw.githubusercontent.com/ClozeeFF/Main/refs/heads/main/EggSelection.lua"))()
+local FruitSelection = loadstring(game:HttpGet("https://raw.githubusercontent.com/ClozeeFF/Main/refs/heads/main/FruitSelection.lua"))()
+local FeedFruitSelection = loadstring(game:HttpGet("https://raw.githubusercontent.com/ClozeeFF/Main/refs/heads/main/FeedFruitSelection.lua"))()
+local AutoFeedSystem = loadstring(game:HttpGet("https://raw.githubusercontent.com/ClozeeFF/Main/refs/heads/main/AutoFeedSystem.lua"))()
 
 -- UI state
 local eggSelectionVisible = false
 local fruitSelectionVisible = false
 local feedFruitSelectionVisible = false
-
 
 
 
@@ -1575,26 +1665,12 @@ Tabs.AutoTab:Button({
     end
 })
 
-
-
 local autoBuyEnabled = false
 local autoBuyThread = nil
 
 -- Auto Feed variables
 local autoFeedEnabled = false
 local autoFeedThread = nil
-
-
-
-
-
-
-
-
-
-
-
-
 
 local function shouldBuyEggInstance(eggInstance, playerMoney)
     if not eggInstance or not eggInstance:IsA("Model") then return false, nil, nil end
@@ -1766,7 +1842,7 @@ local function setupBeltMonitoring(belt)
     local checkThread = task.spawn(function()
         while autoBuyEnabled do
             checkExistingEggs()
-            task.wait(0.5) -- Check every 0.5 seconds
+            task.wait(1) -- ทุก 0.5 วินาที
         end
     end)
     
@@ -1805,7 +1881,7 @@ local function runAutoBuy()
             if currentIsland ~= islandName then
                 break -- Island changed, restart monitoring
             end
-            task.wait(0.5)
+            task.wait(1)
         end
     end
     
@@ -1819,7 +1895,7 @@ local autoBuyToggle = Tabs.AutoTab:Toggle({
     Callback = function(state)
         autoBuyEnabled = state
         
-        waitForSettingsReady(0.2)
+        waitForSettingsReady(0.5)
         if state and not autoBuyThread then
             autoBuyThread = task.spawn(function()
                 runAutoBuy()
@@ -1881,6 +1957,8 @@ local function getEggOptions()
     return eggOptions
 end
 
+--==============================================================================================================================
+--==============================================================================================================================
 -- Egg selection dropdown
 local placeEggDropdown = Tabs.PlaceTab:Dropdown({
     Title = "🥚 Pick Pet Types",
@@ -2010,7 +2088,7 @@ local function scanAllTilesAndModels()
     for i, part in ipairs(farmParts) do
         local surfacePos = Vector3.new(
             part.Position.X,
-            part.Position.Y + 12, -- Eggs float 12 studs above tile surface
+            part.Position.Y + 8, -- Eggs float 12 studs above tile surface
             part.Position.Z
         )
         tileMap[surfacePos] = {
@@ -2195,7 +2273,7 @@ local function placeEggInstantly(eggInfo, tileInfo)
         -- Calculate surface position (same as placement logic)
         local surfacePos = Vector3.new(
             tilePos.X,
-            tilePos.Y + 12, -- Eggs float 12 studs above tile surface
+            tilePos.Y + 8, -- Eggs float 12 studs above tile surface
             tilePos.Z
         )
         
@@ -2210,26 +2288,28 @@ local function placeEggInstantly(eggInfo, tileInfo)
         end
     end
     
+	-- แก้ไข ไข่ บัค
     -- Equip egg to Deploy S2
     local deploy = LocalPlayer.PlayerGui.Data:FindFirstChild("Deploy")
     if deploy then
         local eggUID = "Egg_" .. petUID
-        deploy:SetAttribute("S2", eggUID)
-    end
-    
+        deploy:SetAttribute("S3", eggUID)	-- แก้ไข Slot
+end 
     -- Hold egg
-    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Two, false, game)
-    task.wait(0.1)
-    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Two, false, game)
-    task.wait(0.1)
-    
+    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Three, false, game)		-- แก้ไข Slot
+    task.wait(0.1) -- รอ 1วิ
+    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Three, false, game)	-- แก้ไข Slot
+    task.wait(0.1) -- รอ 1วิ
+
+ 
+
     -- Teleport to tile
     local char = Players.LocalPlayer.Character
     if char then
         local hrp = char:FindFirstChild("HumanoidRootPart")
         if hrp then
             hrp.CFrame = CFrame.new(tilePart.Position)
-            task.wait(0.1)
+            task.wait(0.1) -- รอ 1วิ
         end
     end
     
@@ -2254,7 +2334,7 @@ local function placeEggInstantly(eggInfo, tileInfo)
     
     if success then
         -- Verify placement
-        task.wait(0.3)
+        task.wait(0.1) -- รอ 1วิ
         local placementConfirmed = false
         
         if playerBuiltBlocks then
@@ -2329,7 +2409,7 @@ local function attemptPlacement()
     -- Place eggs on available tiles (limit to prevent lag)
     local placed = 0
     local attempts = 0
-    local maxAttempts = math.min(#availableEggs, #availableTiles, 1) -- Limit to 5 attempts max
+    local maxAttempts = math.min(#availableEggs, #availableTiles, 2) -- Limit to 5 attempts max
     
     while #availableEggs > 0 and #availableTiles > 0 and attempts < maxAttempts do
         attempts = attempts + 1
@@ -2349,7 +2429,7 @@ local function attemptPlacement()
                         -- Calculate surface position (same as placement logic)
                         local surfacePos = Vector3.new(
                             tilePos.X,
-                            tilePos.Y + 12, -- Eggs float 12 studs above tile surface
+                            tilePos.Y + 8, -- Eggs float 12 studs above tile surface
                             tilePos.Z
                         )
                         
@@ -2376,7 +2456,7 @@ local function attemptPlacement()
                     -- Calculate surface position (same as placement logic)
                     local surfacePos = Vector3.new(
                         tilePos.X,
-                        tilePos.Y + 12, -- Eggs float 12 studs above tile surface
+                        tilePos.Y + 8, -- Eggs float 12 studs above tile surface
                         tilePos.Z
                     )
                     
@@ -2417,7 +2497,7 @@ local function setupPlacementMonitoring()
         local function onEggAdded(child)
             if not autoPlaceEnabled then return end
             if #child:GetChildren() == 0 then -- No subfolder = available egg
-                task.wait(0.2) -- Wait for attributes to be set
+                task.wait(0.1) -- Wait for attributes to be set
                 updateAvailableEggs()
                 attemptPlacement()
             end
@@ -2437,7 +2517,7 @@ local function setupPlacementMonitoring()
     if playerBuiltBlocks then
         local function onBlockChanged()
             if not autoPlaceEnabled then return end
-            task.wait(0.2)
+            task.wait(0.1)
             updateAvailableTiles()
             attemptPlacement()
         end
@@ -2541,8 +2621,8 @@ local autoPlaceToggle = Tabs.PlaceTab:Toggle({
     end
 })
 
-
-
+--==============================================================================================================================
+--==============================================================================================================================
 
 -- Auto Unlock Tile functionality
 local autoUnlockEnabled = false
@@ -2850,158 +2930,112 @@ Window:OnClose(function()
     autoBuyEnabled = false
     autoPlaceEnabled = false
     autoFeedEnabled = false
+    autoClaimEnabled = false
+	autoHatchEnabled = false
+	antiAFKEnabled = false
+	AnimationCoinEnabled = false
+
+	antiAnimation = false
+	PetModel = false
 end)
+--====================================
+-- ============ Animation ============
+Animationdisable = function()
+	if antiAnimation then return end
+	antiAnimation = true
+	
+		task.spawn(function()
+			while  antiAnimation do
 
+            	local pets = game:GetService("Workspace"):WaitForChild("Pets")
+            	for _, v in pairs(pets:GetChildren()) do
+                local petModel = pets:FindFirstChild(v.Name)
+                	if petModel then
+                    local animCtrl = petModel:FindFirstChild("AnimationController")
+                    	if animCtrl then animCtrl:Destroy() end
+                    local MutateFX = petModel:FindFirstChild("MutateFX_Inst")
+                    	if MutateFX then MutateFX:Destroy() end
+                	end
+            	end
 
--- ============ Auto Claim Dino (every 10 minutes) ============
-local autoDinoEnabled = false
-local autoDinoThread = nil
-local lastDinoAt = 0
-
-local function fireDinoClaim()
-    local ok, err = pcall(function()
-        ReplicatedStorage:WaitForChild("Remote"):WaitForChild("DinoEventRE"):FireServer({ event = "onlinepack" })
-    end)
-    if not ok then warn("DinoClaim fire failed: " .. tostring(err)) end
-    return ok
+            	local PlayerBuiltBlocks = game:GetService("Workspace"):WaitForChild("PlayerBuiltBlocks")
+            	for _, v in pairs(PlayerBuiltBlocks:GetChildren()) do
+                local builtModel = PlayerBuiltBlocks:FindFirstChild(v.Name)
+                	if builtModel then
+                    local animCtrl = builtModel:FindFirstChild("AnimationController")
+                   		if animCtrl then animCtrl:Destroy()end
+                    local MutateFX = builtModel:FindFirstChild("MutateFX_Inst")
+                    	if MutateFX then MutateFX:Destroy() end
+                	end
+            	end
+			
+			task.wait(300)
+			end
+		end)
+		
+	WindUI:Notify({ Title = "⛔ Animation", Content = "ปิดการแสดง Animation แล้ว", Duration = 3 })
 end
+disableAnimation = function()
+    if not antiAnimation then return end
+    antiAnimation = false
 
-local function getDinoClaimText()
-    local pg = LocalPlayer and LocalPlayer:FindFirstChild("PlayerGui")
-    if not pg then return nil end
-    local gui = pg:FindFirstChild("ScreenDinoOnLinePack")
-    if not gui then return nil end
-    local root = gui:FindFirstChild("Root")
-    if not root then return nil end
-    local freeBtn = root:FindFirstChild("FreeBtn")
-    if not freeBtn then return nil end
-    local frame = freeBtn:FindFirstChild("Frame")
-    if not frame then return nil end
-    local count = frame:FindFirstChild("Count")
-    if count and count:IsA("TextLabel") then
-        return count.Text
-    end
-    return nil
+    WindUI:Notify({ Title = "⛔ Animation", Content = "Animation ถูกปิดไปแล้ว.", Duration = 3 })
 end
-
-local function getDinoProgressText()
-    local pg = LocalPlayer and LocalPlayer:FindFirstChild("PlayerGui")
-    if not pg then return nil end
-    local gui = pg:FindFirstChild("ScreenDinoOnLinePack")
-    if not gui then return nil end
-    local root = gui:FindFirstChild("Root")
-    if not root then return nil end
-    local bar = root:FindFirstChild("ProgressBar")
-    if not bar then return nil end
-    local textHolder = bar:FindFirstChild("Text")
-    if not textHolder then return nil end
-    local label = textHolder:FindFirstChild("Text")
-    if label and label:IsA("TextLabel") then
-        return label.Text
-    end
-    return nil
-end
-
-local function parseMMSS(str)
-    if type(str) ~= "string" then return nil end
-    local m, s = str:match("^(%d+):(%d+)$")
-    if not m then return nil end
-    local mi = tonumber(m)
-    local si = tonumber(s)
-    if not mi or not si then return nil end
-    return mi * 60 + si
-end
-
-local function canClaimDino()
-    -- Check if claim count shows "Claim(x0)" - if so, don't claim
-    local claimText = getDinoClaimText()
-    if claimText then
-        if string.find(claimText, "Claim%(x0%)") or string.find(claimText, "Claim%(0%)") then
-            return false, "No claims remaining"
-        end
-    end
-    
-    -- If claim text exists and doesn't show "Claim(x0)", allow claiming
-    if claimText and claimText ~= "" then
-        return true, "Ready to claim"
-    end
-    
-    return false, "Cannot read claim status"
-end
-
-local function runAutoDino()
-    while autoDinoEnabled do
-        local canClaim, reason = canClaimDino()
-        
-        if canClaim then
-            if os.clock() - (lastDinoAt or 0) > 2 then -- small debounce window
-                if fireDinoClaim() then
-                    lastDinoAt = os.clock()
-                    WindUI:Notify({ Title = "🦕 Auto Claim Dino", Content = "Dino pack claimed! 🎉", Duration = 3 })
-                end
-            end
-            task.wait(2)
-        else
-            task.wait(1)
-        end
-    end
-end
-
-local autoDinoToggle = Tabs.PackTab:Toggle({
-    Title = "🦕 Auto Claim Dino",
-    Desc = "Automatically claims dino packs when ready (checks claim count)",
-    Value = false,
-    Callback = function(state)
-        autoDinoEnabled = state
-        
-        waitForSettingsReady(0.2)
-        if state and not autoDinoThread then
-            autoDinoThread = task.spawn(function()
-                runAutoDino()
-                autoDinoThread = nil
-            end)
-            WindUI:Notify({ Title = "🦕 Auto Claim Dino", Content = "Started claiming dino packs! 🎉", Duration = 3 })
-        elseif (not state) and autoDinoThread then
-            WindUI:Notify({ Title = "🦕 Auto Claim Dino", Content = "Stopped", Duration = 3 })
-        end
-    end
-})
-
-
-
-Tabs.PackTab:Button({
-    Title = "🦕 Claim Dino Now",
-    Desc = "Claim dino pack right now (if available)",
+Tabs.Animation:Button({
+    Title = "⛔ Animation",
+    Desc = "ปิด อนิเมชั่น สัตว์เลี้ยง",
     Callback = function()
-        local canClaim, reason = canClaimDino()
-        if canClaim then
-            if fireDinoClaim() then
-                lastDinoAt = os.clock()
-                WindUI:Notify({ Title = "🦕 Claim Dino", Content = "Dino pack claimed! 🎉", Duration = 3 })
-            end
+        if antiAnimation then
+            disableAnimation()
         else
-            WindUI:Notify({ Title = "🦕 Claim Dino", Content = "Cannot claim: " .. reason, Duration = 3 })
+            Animationdisable()
         end
     end
 })
+--====================================
+PetModeldisable = function()
+	if PetModel then return end
+	PetModel = true
+	
+		task.spawn(function()
+			while  PetModel do
 
-Tabs.PackTab:Button({
-    Title = "🔍 Check Dino Status",
-    Desc = "Check current dino pack status",
+				local pets = game:GetService("Workspace"):WaitForChild("Pets")
+				for _, v in pairs(pets:GetChildren()) do
+					local petModel = pets:FindFirstChild(v.Name)
+					if petModel then
+						for _, obj in ipairs(petModel:GetDescendants()) do
+							if obj:IsA("BasePart") and obj.Name ~= "RootPart" then
+								obj:Destroy()
+							end
+						end
+					end
+				end
+			
+			task.wait(300)
+			end
+		end)
+		
+	WindUI:Notify({ Title = "⛔ PetModel", Content = "ปิด PetModel", Duration = 3 })
+end
+disablePetModel = function()
+    if not PetModel then return end
+    PetModel = false
+
+    WindUI:Notify({ Title = "⛔ PetModel", Content = "PetModel ถูกปิดไปแล้ว.", Duration = 3 })
+end
+Tabs.Animation:Button({
+    Title = "⛔ PetModel",
+    Desc = "ปิด อนิเมชั่น สัตว์เลี้ยง",
     Callback = function()
-        local claimText = getDinoClaimText() or "Unknown"
-        local progressText = getDinoProgressText() or "Unknown"
-        local canClaim, reason = canClaimDino()
-        
-        local message = string.format("🦕 Dino Pack Status:\n")
-        message = message .. string.format("📊 Claim Text: %s\n", claimText)
-        message = message .. string.format("⏰ Progress: %s\n", progressText)
-        message = message .. string.format("✅ Can Claim: %s\n", tostring(canClaim))
-        message = message .. string.format("💬 Reason: %s", reason)
-        
-        WindUI:Notify({ Title = "🔍 Dino Status", Content = message, Duration = 8 })
+        if PetModel then
+            disablePetModel()
+        else
+            PetModeldisable()
+        end
     end
 })
+--====================================
 
 -- ============ Shop / Auto Upgrade ============
 Tabs.ShopTab:Section({ Title = "🛒 Auto Upgrade Conveyor", Icon = "arrow-up" })
@@ -3131,7 +3165,7 @@ Tabs.ShopTab:Button({
 
 -- ============ Fruit Market (Auto Buy Fruit) ============
 -- Load Fruit Selection UI
-local FruitSelection = loadstring(game:HttpGet("https://raw.githubusercontent.com/m0rgause/build-a-zoo/refs/heads/main/FruitSelection.lua"))()
+local FruitSelection = loadstring(game:HttpGet("https://raw.githubusercontent.com/ClozeeFF/Main/refs/heads/main/FruitSelection.lua"))()
 
 -- Fruit Data for auto buy functionality
 local FruitData = {
@@ -3144,11 +3178,14 @@ local FruitData = {
     Banana = { Price = "12,000,000" },
     Grape = { Price = "50,000,000" },
     Pear = { Price = "200,000,000" },
-    Pineapple = { Price = "600,000,000" },
+    PineApple = { Price = "1,000,000,000" },
+	DragonFruit = { Price = "1,500,000,000" },
     GoldMango = { Price = "2,000,000,000" },
     BloodstoneCycad = { Price = "8,000,000,000" },
     ColossalPinecone = { Price = "40,000,000,000" },
-    VoltGinkgo = { Price = "80,000,000,000" }
+    VoltGinkgo = { Price = "80,000,000,000" },
+	DeepseaPearlFruit = { Price = "40,000,000,000" },
+	Durian = { Price = "80,000,000,000" }
 }
 
 -- Helper functions moved to FruitStoreSystem.lua
@@ -3159,7 +3196,6 @@ local fruitSelectionVisible = false
 -- Fruit auto buy status removed per user request
 
 -- Fruit status display removed per user request
-
 Tabs.FruitTab:Button({
     Title = "🍎 Open Fruit Selection UI",
     Desc = "Open the modern glass-style fruit selection interface",
@@ -3338,8 +3374,11 @@ local autoBuyFruitToggle = Tabs.FruitTab:Toggle({
     end
 })
 
--- ============ WindUI ConfigManager System ============
 
+
+
+--==================================================================================
+-- ============ WindUI ConfigManager System ============
 -- 1. Load ConfigManager
 local ConfigManager = Window.ConfigManager
 
@@ -3352,6 +3391,7 @@ local customSelections = {
     fruitSelections = {},
     feedFruitSelections = {}
 }
+--==================================================================================
 
 -- Function to save custom UI selections
 local function saveCustomSelections()
@@ -3364,6 +3404,7 @@ local function saveCustomSelections()
         warn("Failed to save custom selections: " .. tostring(err))
     end
 end
+--==================================================================================
 
 -- Function to load custom UI selections
 local function loadCustomSelections()
@@ -3407,6 +3448,7 @@ local function loadCustomSelections()
         warn("Failed to load custom selections: " .. tostring(err))
     end
 end
+--==================================================================================
 
 -- Function to update custom UI selections
 updateCustomUISelection = function(uiType, selections)
@@ -3435,6 +3477,7 @@ updateCustomUISelection = function(uiType, selections)
     
     saveCustomSelections()
 end
+--==================================================================================
 
 -- Register all UI elements with WindUI ConfigManager
 local function registerUIElements()
@@ -3443,6 +3486,7 @@ local function registerUIElements()
             zebuxConfig:Register(key, element)
         end
     end
+
     -- Register toggles (skip nil ones)
     registerIfExists("autoBuyEnabled", autoBuyToggle)
     registerIfExists("autoHatchEnabled", autoHatchToggle)
@@ -3450,7 +3494,6 @@ local function registerUIElements()
     registerIfExists("autoPlaceEnabled", autoPlaceToggle)
     registerIfExists("autoUnlockEnabled", autoUnlockToggle)
     registerIfExists("autoDeleteEnabled", autoDeleteToggle)
-    registerIfExists("autoDinoEnabled", autoDinoToggle)
     registerIfExists("autoUpgradeEnabled", autoUpgradeToggle)
     registerIfExists("autoBuyFruitEnabled", autoBuyFruitToggle)
     registerIfExists("autoFeedEnabled", autoFeedToggle)
@@ -3461,44 +3504,58 @@ local function registerUIElements()
     -- priorityDropdown removed
     
     -- Register sliders/inputs
-    registerIfExists("autoClaimDelaySlider", autoClaimDelaySlider)
     registerIfExists("autoDeleteSpeedSlider", autoDeleteSpeedSlider)
 
 end
+--==================================================================================
 
 -- ============ Anti-AFK System ============
-
 setupAntiAFK = function()
     if antiAFKEnabled then return end
     antiAFKEnabled = true
-    antiAFKConnection = game:GetService("Players").LocalPlayer.Idled:Connect(function()
-        game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
-        task.wait(1)
-        game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
-    end)
-    WindUI:Notify({ Title = "🛡️ Anti-AFK", Content = "Anti-AFK activated!", Duration = 3 })
-end
 
+		task.spawn(function()
+			while  antiAFKEnabled do
+				if antiAFKEnabled then
+
+				-- ตารางของปุ่มที่ต้องการสุ่ม
+				local keys = {
+					Enum.KeyCode.W,
+					Enum.KeyCode.A,
+					Enum.KeyCode.S,
+					Enum.KeyCode.D,
+					Enum.KeyCode.Space
+				}
+
+				-- สุ่มปุ่มจากตาราง
+				local randomKey = keys[math.random(1, #keys)]
+
+				-- จำลองการกดปุ่ม
+ 					VirtualInputManager:SendKeyEvent(true, randomKey, false, game)
+					task.wait(0.1)
+					VirtualInputManager:SendKeyEvent(false, randomKey, false, game)
+				end
+
+				task.wait(30)
+			end
+    	end)
+
+    WindUI:Notify({ Title = "🛡️ Anti-AFK", Content = "Anti-AFK เริ่ม!", Duration = 3 })
+end
 disableAntiAFK = function()
     if not antiAFKEnabled then return end
     antiAFKEnabled = false
+
     if antiAFKConnection then
         antiAFKConnection:Disconnect()
         antiAFKConnection = nil
     end
-    WindUI:Notify({ Title = "🛡️ Anti-AFK", Content = "Anti-AFK deactivated.", Duration = 3 })
+    WindUI:Notify({ Title = "🛡️ Anti-AFK", Content = "Anti-AFK หยุด.", Duration = 3 })
 end
+--==================================================================================
 
 -- ============ Save Settings Tab ============
-Tabs.SaveTab:Section({ Title = "💾 Save & Load", Icon = "save" })
-
-Tabs.SaveTab:Paragraph({
-    Title = "💾 Settings Manager",
-    Desc = "Save your current settings to remember them next time you use the script!",
-    Image = "save",
-    ImageSize = 18,
-})
-
+--==================================================================================
 Tabs.SaveTab:Button({
     Title = "💾 Manual Save",
     Desc = "Manually save all your current settings",
@@ -3512,7 +3569,7 @@ Tabs.SaveTab:Button({
         })
     end
 })
-
+--==================================================================================
 Tabs.SaveTab:Button({
     Title = "📂 Manual Load",
     Desc = "Manually load your saved settings",
@@ -3527,10 +3584,10 @@ Tabs.SaveTab:Button({
         })
     end
 })
-
+--==================================================================================
 Tabs.SaveTab:Button({
-    Title = "🛡️ Toggle Anti-AFK",
-    Desc = "Enable or disable the built-in anti-AFK system",
+    Title = "🛡️ Anti-AFK",
+    Desc = "เปิด/ปิด ระบบ AKF",
     Callback = function()
         if antiAFKEnabled then
             disableAntiAFK()
@@ -3539,115 +3596,7 @@ Tabs.SaveTab:Button({
         end
     end
 })
-
-
-
- 
-
-Tabs.SaveTab:Button({
-    Title = "🔄 Manual Load Settings",
-    Desc = "Manually load all settings (WindUI + Custom)",
-    Callback = function()
-        -- Load WindUI config
-        local configSuccess, configErr = pcall(function()
-            zebuxConfig:Load()
-        end)
-        if not configSuccess then
-            warn("Failed to load WindUI config: " .. tostring(configErr))
-        end
-        
-        -- Load custom selections
-        local customSuccess, customErr = pcall(function()
-            loadCustomSelections()
-        end)
-        
-        -- Sync dropdowns into runtime filters after both loads
-        syncAutoPlaceFiltersFromUI()
-
-        if customSuccess then
-            WindUI:Notify({ Title = "✅ Manual Load", Content = "Settings loaded successfully!", Duration = 3 })
-        else
-            warn("Failed to load custom selections: " .. tostring(customErr))
-            WindUI:Notify({ Title = "⚠️ Manual Load", Content = "Settings loaded but custom selections failed", Duration = 3 })
-        end
-    end
-})
-
-Tabs.SaveTab:Button({
-    Title = "📤 Export Settings",
-    Desc = "Export your settings to clipboard",
-    Callback = function()
-        local success, err = pcall(function()
-            -- Get WindUI config data
-            local configData = ConfigManager:AllConfigs()
-            -- Combine with custom selections
-            local exportData = {
-                windUIConfig = configData,
-                customSelections = customSelections
-            }
-            local jsonData = game:GetService("HttpService"):JSONEncode(exportData)
-            setclipboard(jsonData)
-        end)
-        
-        if success then
-            WindUI:Notify({ 
-                Title = "📤 Settings Exported", 
-                Content = "Settings copied to clipboard! 🎉", 
-                Duration = 3 
-            })
-        else
-            WindUI:Notify({ 
-                Title = "❌ Export Failed", 
-                Content = "Failed to export settings: " .. tostring(err), 
-                Duration = 5 
-            })
-        end
-    end
-})
-
-Tabs.SaveTab:Button({
-    Title = "📥 Import Settings",
-    Desc = "Import settings from clipboard",
-    Callback = function()
-        local success, err = pcall(function()
-            local clipboardData = getclipboard()
-            local importedData = game:GetService("HttpService"):JSONDecode(clipboardData)
-            
-            if importedData and importedData.windUIConfig then
-                -- Import WindUI config
-                for configName, configData in pairs(importedData.windUIConfig) do
-                    local config = ConfigManager:GetConfig(configName)
-                    if config then
-                        config:LoadFromData(configData)
-                    end
-                end
-                
-                -- Import custom selections
-                if importedData.customSelections then
-                    customSelections = importedData.customSelections
-                    saveCustomSelections()
-                end
-                
-                WindUI:Notify({ 
-                    Title = "📥 Settings Imported", 
-                    Content = "Settings imported successfully! 🎉", 
-                    Duration = 3 
-                })
-            else
-                error("Invalid settings format")
-            end
-        end)
-        
-        if not success then
-            WindUI:Notify({ 
-                Title = "❌ Import Failed", 
-                Content = "Failed to import settings: " .. tostring(err), 
-                Duration = 5 
-            })
-        end
-    end
-})
-
+--==================================================================================
 Tabs.SaveTab:Button({
     Title = "🔄 Reset Settings",
     Desc = "Reset all settings to default",
@@ -3694,7 +3643,9 @@ Tabs.SaveTab:Button({
                             autoPlaceEnabled = false
                             autoUnlockEnabled = false
                             autoDeleteEnabled = false
-                            autoDinoEnabled = false
+                            AnimationCoinEnabled = false
+							AnimationEnabled = false
+							PetModelEnabled = false
                             autoUpgradeEnabled = false
                             autoBuyFruitEnabled = false
                             autoFeedEnabled = false
@@ -3749,7 +3700,9 @@ Tabs.SaveTab:Button({
         })
     end
 })
+--==================================================================================
 
+--==================================================================================
 -- Auto-load settings after all UI elements are created
 task.spawn(function()
     task.wait(3) -- Wait longer for UI to fully load
@@ -3764,40 +3717,6 @@ task.spawn(function()
     -- Register all UI elements with WindUI config
     registerUIElements()
 
-    -- Load local AutoQuest module and initialize its UI. Keep it after base UI exists so it can attach to Window and Config
-    pcall(function()
-        local autoQuestModule = nil
-        -- Try local file first (if present in environment with filesystem)
-        if isfile and isfile("AutoQuestSystem.lua") then
-            autoQuestModule = loadstring(readfile("AutoQuestSystem.lua"))()
-        end
-        -- Fallback: try from same directory
-        if not autoQuestModule then
-            local success, result = pcall(function()
-                return loadstring(game:HttpGet("https://raw.githubusercontent.com/m0rgause/build-a-zoo/refs/heads/main/AutoQuestSystem.lua"))()
-            end)
-            if success then
-                autoQuestModule = result
-            end
-        end
-        if autoQuestModule and autoQuestModule.Init then
-            AutoQuestSystem = autoQuestModule.Init({
-                WindUI = WindUI,
-                Window = Window,
-                Config = zebuxConfig,
-                waitForSettingsReady = waitForSettingsReady,
-                -- Pass existing automation references so AutoQuest can control them
-                autoBuyToggle = autoBuyToggle,
-                autoPlaceToggle = autoPlaceToggle,
-                autoHatchToggle = autoHatchToggle,
-                -- Pass automation state variables
-                getAutoBuyEnabled = function() return autoBuyEnabled end,
-                getAutoPlaceEnabled = function() return autoPlaceEnabled end,
-                getAutoHatchEnabled = function() return autoHatchEnabled end,
-            })
-        end
-    end)
-    
     -- Load WindUI config settings
     zebuxConfig:Load()
     
@@ -3815,14 +3734,14 @@ task.spawn(function()
     WindUI:Notify({ 
         Title = "📂 Auto-Load Complete", 
             Content = "Your saved settings have been loaded! 🎉", 
-            Duration = 3 
+            Duration = 2 
         })
     settingsLoaded = true
 end)
+--==================================================================================
 
 -- ============ Auto Feed Tab ============
 -- Feed status section removed per user request
-
 -- Feed Fruit Selection UI Button
 Tabs.FeedTab:Button({
     Title = "🍎 Open Feed Fruit Selection UI",
@@ -3928,6 +3847,3 @@ end)
 if not ok then
     warn("Failed to set window close handler: " .. tostring(err))
 end
-
--- Function removed - using WindUI config system instead
--- Function removed - using WindUI config system instead
