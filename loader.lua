@@ -24,7 +24,7 @@ local function fetch_key_data()
         return game:HttpGet(KEY_URL)
     end)
     if not ok or not res then
-        warn("[Lucy Loader] ❌ Failed to load key.json:", res)
+        --warn("[Lucy Loader] ❌ Failed to load key.json:", res)    --ปิด
         return nil
     end
 
@@ -32,11 +32,11 @@ local function fetch_key_data()
         return HttpService:JSONDecode(res)
     end)
     if success and data and data.keys then
-        print("[Lucy Loader] ✅ Loaded", #data.keys, "keys")
+        --print("[Lucy Loader] ✅ Loaded", #data.keys, "keys")    --ปิด
         return data.keys
     end
 
-    warn("[Lucy Loader] ⚠️ Invalid JSON format")
+    --warn("[Lucy Loader] ⚠️ Invalid JSON format")    --ปิด
     return nil
 end
 
@@ -72,20 +72,20 @@ end
 
 -- 🧩 โหลดและรัน TEST.lua
 local function load_main_script()
-    print("[Lucy Loader] 🔄 Fetching TEST.lua...")
+    --print("[Lucy Loader] 🔄 Fetching TEST.lua...")    --ปิด
     local ok, code = pcall(function()
         return game:HttpGet(MAIN_URL)
     end)
     if not ok or not code or code == "" then
-        warn("[Lucy Loader] ❌ Failed to download:", code)
+        --warn("[Lucy Loader] ❌ Failed to download:", code)    --ปิด
         return
     end
-    print("[Lucy Loader] ✅ Running TEST.lua")
+    --print("[Lucy Loader] ✅ Running TEST.lua")    --ปิด
     local success, err = pcall(function()
         loadstring(code)()
     end)
     if not success then
-        warn("[Lucy Loader] ⚠️ Script error:", err)
+        --warn("[Lucy Loader] ⚠️ Script error:", err)    --ปิด
     end
 end
 
@@ -138,10 +138,10 @@ local function createHWIDUI()
         local ok, info = verify_hwid(keyList, hwid)
 
         if ok then
-            print("[Lucy Loader] ✅ HWID matched! Expire:", info)
+            --print("[Lucy Loader] ✅ HWID matched! Expire:", info)    --ปิด
             if writefile then
                 pcall(writefile, savePath, hwid)
-                print("[Lucy Loader] 💾 Saved HWID to local:", savePath)
+                --print("[Lucy Loader] 💾 Saved HWID to local:", savePath)    --ปิด
             end
             frame:Destroy()
             load_main_script()
@@ -155,7 +155,7 @@ local function createHWIDUI()
             task.wait(1.5)
             button.Text = "Check HWID"
             button.Active = true
-            warn("[Lucy Loader] ❌ HWID check failed:", info)
+            --warn("[Lucy Loader] ❌ HWID check failed:", info)    --ปิด
         end
     end)
 end
@@ -165,7 +165,7 @@ local function tryAutoLogin()
     if isfile and isfile(savePath) then
         local savedHWID = readfile(savePath)
         if savedHWID and savedHWID == hwid then
-            print("[Lucy Loader] 🔓 Auto login success (saved HWID)")
+            --print("[Lucy Loader] 🔓 Auto login success (saved HWID)")    --ปิด
             load_main_script()
             return true
         end
