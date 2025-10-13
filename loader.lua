@@ -10,7 +10,7 @@ local hwid = Analytics:GetClientId()
 
 -- 🔗 URLs
 local KEY_URL  = "https://raw.githubusercontent.com/ClozeeFF/Main/main/key.json"
-local MAIN_URL = "https://raw.githubusercontent.com/ClozeeFF/Main/main/TEST.lua"
+local MAIN_URL = "https://raw.githubusercontent.com/ClozeeFF/Main/main/BAZ.lua"
 
 -- 🧩 โหลด key.json
 local function fetch_key_data()
