@@ -4,8 +4,6 @@
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local Analytics = game:GetService("RbxAnalyticsService")
-
-local player = Players.LocalPlayer or Players:GetPlayers()[1]
 local hwid = Analytics:GetClientId()
 
 -- 🔗 URLs
