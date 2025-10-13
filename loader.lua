@@ -9,8 +9,8 @@ local player = Players.LocalPlayer or Players:GetPlayers()[1]
 local hwid = Analytics:GetClientId()
 
 -- 🔗 URLs
-local KEY_URL  = "https://raw.githubusercontent.com/ClozeeFF/Main/main/key.json"
-local MAIN_URL = "https://raw.githubusercontent.com/ClozeeFF/Main/main/BAZ.lua"
+local KEY_URL  = "https://raw.githubusercontent.com/ClozeeFF/Main/refs/heads/main/key.json"
+local MAIN_URL = "https://raw.githubusercontent.com/ClozeeFF/Main/refs/heads/main/BAZ.lua"
 
 -- 🧩 โหลด key.json
 local function fetch_key_data()
