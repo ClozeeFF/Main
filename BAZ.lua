@@ -2930,7 +2930,7 @@ Window:EditOpenButton({
     ),
     OnlyMobile = false,
     Enabled = true,
-    Draggable = true,
+    Draggable = true
 })
 
 -- Close callback
@@ -3859,3 +3859,4 @@ end
 -- Function removed - using WindUI config system instead
 
 -- Function removed - using WindUI config system instead
+
