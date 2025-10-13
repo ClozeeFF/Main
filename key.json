@@ -6,9 +6,10 @@
             "expire": "2025-12-31"
         },
         {
-            "key": "LUCY-TEST-002",
-            "hwid": "HWID-XYZ-8888",
+            "key": "F9987D41-5E36-42E8-A27B-4067B5C201C5",
+            "hwid": "F9987D41-5E36-42E8-A27B-4067B5C201C5",
             "expire": "permanent"
         }
     ]
 }
+
