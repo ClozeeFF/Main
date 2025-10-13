@@ -40,8 +40,8 @@ local Window = WindUI:CreateWindow({
     Size = UDim2.fromOffset(600, 420),
     Transparent = true,
     Theme = "Dark",
-	Resizable = false,
-		Window:SetToggleKey(Enum.KeyCode.LeftControl)
+	Resizable = false
+	--Window:SetToggleKey(Enum.KeyCode.LeftControl)
 })
  	-- Minimize
 	--Window:SetToggleKey(Enum.KeyCode.LeftControl)
@@ -3860,5 +3860,6 @@ end
 -- Function removed - using WindUI config system instead
 
 -- Function removed - using WindUI config system instead
+
 
 
