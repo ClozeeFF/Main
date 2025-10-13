@@ -1,17 +1,16 @@
 {
     "keys": [
         {
-            "key": "LUCY-TEST-001",
             "hwid": "F9987D41-5E36-42E8-A27B-4067B5C201C5",
             "expire": "2025-12-31"
         },
         {
-            "key": "F9987D41",
-            "hwid": "F9987D41-5E36-42E8-A27B-4067B5C201C5",
+            "hwid": "A000FE99-EE11-19EF-DD5B-9855C0C985A3",
             "expire": "permanent"
         }
     ]
 }
+
 
 
 
