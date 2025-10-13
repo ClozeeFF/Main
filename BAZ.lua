@@ -23,7 +23,7 @@ local function waitForSettingsReady(extraDelay)
     while not settingsLoaded do
         task.wait(0.1)
     end
-    if extraDelay then
+    if extraDelay and extraDelay > 0 then
         task.wait(extraDelay)
     end
 end
@@ -32,16 +32,15 @@ local autoFeedToggle
 
 -- Window
 local Window = WindUI:CreateWindow({
-    Title = "Build-A-Zoo",
+    Title = "Build A Zoo",
     Icon = "app-window-mac",
     IconThemed = true,
-    Author = "V1.0",
+    Author = "m0rgause",
     Folder = "Zebux",
-    Size = UDim2.fromOffset(600, 420),
+    Size = UDim2.fromOffset(520, 360),
     Transparent = true,
     Theme = "Dark",
-	Resizable = false
-	--Window:SetToggleKey(Enum.KeyCode.LeftControl)
+    -- No keysystem
 })
  	-- Minimize
 	--Window:SetToggleKey(Enum.KeyCode.LeftControl)
@@ -3860,6 +3859,7 @@ end
 -- Function removed - using WindUI config system instead
 
 -- Function removed - using WindUI config system instead
+
 
 
 
