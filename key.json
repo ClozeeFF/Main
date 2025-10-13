@@ -1,7 +1,14 @@
 {
     "keys": [
-        "LucyTestKey123",
-        "Secret777",
-        "DEV-ACCESS-2025"
+        {
+            "key": "LUCY-TEST-001",
+            "hwid": "A1B2C3D4E5F6",
+            "expire": "2025-12-31"
+        },
+        {
+            "key": "LUCY-TEST-002",
+            "hwid": "HWID-XYZ-8888",
+            "expire": "permanent"
+        }
     ]
 }
