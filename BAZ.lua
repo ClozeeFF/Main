@@ -1,4 +1,4 @@
-﻿local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -36,7 +36,7 @@ local Window = WindUI:CreateWindow({
     Icon = "app-window-mac",
     IconThemed = true,
     Author = "V1.0",
-    Folder = "LucySystem",
+    Folder = "Zebux",
     Size = UDim2.fromOffset(600, 420),
     Transparent = true,
     Theme = "Dark",
@@ -96,8 +96,8 @@ local function loadAllSettings()
 
     -- Load custom selection variables from JSON files
     local success, data = pcall(function()
-        if isfile("LucySystem/Zebux_EggSelections.json") then
-            local jsonData = readfile("LucySystem/Zebux_EggSelections.json")
+        if isfile("Zebux_EggSelections.json") then
+            local jsonData = readfile("Zebux_EggSelections.json")
             return game:GetService("HttpService"):JSONDecode(jsonData)
         end
     end)
@@ -123,8 +123,8 @@ local function loadAllSettings()
 
     -- Load fruit selections
     local fruitSuccess, fruitData = pcall(function()
-        if isfile("LucySystem/Zebux_FruitSelections.json") then
-            local jsonData = readfile("LucySystem/Zebux_FruitSelections.json")
+        if isfile("Zebux_FruitSelections.json") then
+            local jsonData = readfile("Zebux_FruitSelections.json")
             return game:GetService("HttpService"):JSONDecode(jsonData)
         end
     end)
@@ -142,8 +142,8 @@ local function loadAllSettings()
 
     -- Load feed fruit selections
     local feedFruitSuccess, feedFruitData = pcall(function()
-        if isfile("LucySystem/Zebux_FeedFruitSelections.json") then
-            local jsonData = readfile("LucySystem/Zebux_FeedFruitSelections.json")
+        if isfile("Zebux_FeedFruitSelections.json") then
+            local jsonData = readfile("Zebux_FeedFruitSelections.json")
             return game:GetService("HttpService"):JSONDecode(jsonData)
         end
     end)
@@ -161,8 +161,8 @@ local function loadAllSettings()
 
     -- Load auto place selections
     local autoPlaceSuccess, autoPlaceData = pcall(function()
-        if isfile("LucySystem/Zebux_AutoPlaceSelections.json") then
-            local jsonData = readfile("LucySystem/Zebux_AutoPlaceSelections.json")
+        if isfile("Zebux_AutoPlaceSelections.json") then
+            local jsonData = readfile("Zebux_AutoPlaceSelections.json")
             return game:GetService("HttpService"):JSONDecode(jsonData)
         end
     end)
@@ -205,10 +205,10 @@ end
     -- Save auto place selections
     local autoPlaceSelections = { eggTypes = selectedEggTypes, mutations = selectedMutations } 
     pcall(function()
-        writefile("LucySystem/Zebux_AutoPlaceSelections.json", game:GetService("HttpService"):JSONEncode(autoPlaceSelections))
+        writefile("Zebux_AutoPlaceSelections.json", game:GetService("HttpService"):JSONEncode(autoPlaceSelections))
     end)
     pcall(function()
-        writefile("LucySystem/Zebux_EggSelections.json", game:GetService("HttpService"):JSONEncode(eggSelections))
+        writefile("Zebux_EggSelections.json", game:GetService("HttpService"):JSONEncode(eggSelections))
     end)
     --==================================================================================
 
@@ -218,7 +218,7 @@ end
         table.insert(fruitSelections.fruits, fruitId)
     end
     pcall(function()
-        writefile("LucySystem/Zebux_FruitSelections.json", game:GetService("HttpService"):JSONEncode(fruitSelections))
+        writefile("Zebux_FruitSelections.json", game:GetService("HttpService"):JSONEncode(fruitSelections))
     end)
     --==================================================================================
 
@@ -228,7 +228,7 @@ end
         table.insert(feedFruitSelections.fruits, fruitId)
     end
     pcall(function()
-        writefile("LucySystem/Zebux_FeedFruitSelections.json", game:GetService("HttpService"):JSONEncode(feedFruitSelections))
+        writefile("Zebux_FeedFruitSelections.json", game:GetService("HttpService"):JSONEncode(feedFruitSelections))
     end)
 end
 --==================================================================================
@@ -3405,7 +3405,7 @@ local customSelections = {
 local function saveCustomSelections()
     local success, err = pcall(function()
         local jsonData = game:GetService("HttpService"):JSONEncode(customSelections)
-        writefile("LucySystem/Zebux_CustomSelections.json", jsonData)
+        writefile("Zebux_CustomSelections.json", jsonData)
     end)
     
     if not success then
@@ -3417,8 +3417,8 @@ end
 -- Function to load custom UI selections
 local function loadCustomSelections()
     local success, err = pcall(function()
-        if isfile("LucySystem/Zebux_CustomSelections.json") then
-            local jsonData = readfile("LucySystem/Zebux_CustomSelections.json")
+        if isfile("Zebux_CustomSelections.json") then
+            local jsonData = readfile("Zebux_CustomSelections.json")
             local loaded = game:GetService("HttpService"):JSONDecode(jsonData)
             if loaded then
                 customSelections = loaded
@@ -3625,7 +3625,7 @@ Tabs.SaveTab:Button({
                     Callback = function()
                         local success, err = pcall(function()
                             -- Delete WindUI config files
-                            local configFiles = listfiles("WindUI/LucySystem/config")
+                            local configFiles = listfiles("WindUI/Zebux/config")
                             for _, file in ipairs(configFiles) do
                                 if file:match("zebuxConfig%.json$") then
                                     delfile(file)
@@ -3633,8 +3633,8 @@ Tabs.SaveTab:Button({
                             end
                             
                             -- Delete custom selections file
-                            if isfile("LucySystem/Zebux_CustomSelections.json") then
-                                delfile("LucySystem/Zebux_CustomSelections.json")
+                            if isfile("Zebux_CustomSelections.json") then
+                                delfile("Zebux_CustomSelections.json")
                             end
                             
                             -- Reset custom selections
@@ -3791,8 +3791,8 @@ autoFeedToggle = Tabs.FeedTab:Toggle({
                     -- if empty, try to lazy-load from file once
                     if not selectedFeedFruits or not next(selectedFeedFruits) then
 pcall(function()
-                            if isfile("LucySystem/Zebux_FeedFruitSelections.json") then
-                                local data = game:GetService("HttpService"):JSONDecode(readfile("LucySystem/Zebux_FeedFruitSelections.json"))
+                            if isfile("Zebux_FeedFruitSelections.json") then
+                                local data = game:GetService("HttpService"):JSONDecode(readfile("Zebux_FeedFruitSelections.json"))
                                 if data and data.fruits then
                                     selectedFeedFruits = {}
                                     for _, id in ipairs(data.fruits) do selectedFeedFruits[id] = true end
