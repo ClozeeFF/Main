@@ -1,5 +1,5 @@
--- Lucy Loader v4.0 (Key + HWID + Expire + AutoLogin + Copy HWID)
--- โหลด TEST.lua จาก GitHub ถ้า key/hwid/expire ถูกต้อง
+-- Lucy Loader HWID-Only Version
+-- ตรวจสอบ HWID จาก key.json แล้วโหลด TEST.lua
 
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
@@ -9,35 +9,8 @@ local player = Players.LocalPlayer or Players:GetPlayers()[1]
 local hwid = Analytics:GetClientId()
 
 -- 🔗 URLs
-local KEY_URL  = "https://raw.githubusercontent.com/ClozeeFF/Main/refs/heads/main/key.json"
-local MAIN_URL = "https://raw.githubusercontent.com/ClozeeFF/Main/refs/heads/main/BAZ.lua"
-
--- 🔒 Local save path
-local SAVE_FOLDER = "LucySystem"
-local SAVE_PATH = SAVE_FOLDER .. "/key.txt"
-
--- 🧩 Helper: อ่าน/เขียนไฟล์ (บาง executor ต้องรองรับ writefile)
-local function readSavedKey()
-    if isfolder and not isfolder(SAVE_FOLDER) then
-        pcall(makefolder, SAVE_FOLDER)
-    end
-    if isfile and isfile(SAVE_PATH) then
-        local ok, data = pcall(readfile, SAVE_PATH)
-        if ok and data and data ~= "" then
-            return data
-        end
-    end
-    return nil
-end
-
-local function saveKeyLocally(key)
-    if not writefile then return end
-    if isfolder and not isfolder(SAVE_FOLDER) then
-        pcall(makefolder, SAVE_FOLDER)
-    end
-    pcall(writefile, SAVE_PATH, key)
-    print("[Lucy Loader] Key saved locally at:", SAVE_PATH)
-end
+local KEY_URL  = "https://raw.githubusercontent.com/ClozeeFF/Main/main/key.json"
+local MAIN_URL = "https://raw.githubusercontent.com/ClozeeFF/Main/main/TEST.lua"
 
 -- 🧩 โหลด key.json
 local function fetch_key_data()
@@ -45,31 +18,28 @@ local function fetch_key_data()
         return game:HttpGet(KEY_URL)
     end)
     if not ok or not res then
-        warn("[Lucy Loader] ❌ Failed to get key.json:", res)
+        warn("[Lucy Loader] ❌ Failed to load key.json:", res)
         return nil
     end
+
     local success, data = pcall(function()
         return HttpService:JSONDecode(res)
     end)
     if success and data and data.keys then
-        print("[Lucy Loader] ✅ Loaded keys from GitHub (" .. #data.keys .. ")")
+        print("[Lucy Loader] ✅ Loaded", #data.keys, "keys")
         return data.keys
-    else
-        warn("[Lucy Loader] ⚠️ Invalid JSON format in key.json")
-        return nil
     end
+
+    warn("[Lucy Loader] ⚠️ Invalid JSON format")
+    return nil
 end
 
--- 🧩 ตรวจสอบ key / hwid / expire
-local function verify_key(keyList, enteredKey, userHWID)
+-- 🧩 ตรวจสอบ HWID
+local function verify_hwid(keyList, userHWID)
     if not keyList then return false, "no_data" end
 
     for _, item in ipairs(keyList) do
-        if item.key == enteredKey then
-            if item.hwid ~= userHWID then
-                return false, "hwid_mismatch"
-            end
-
+        if item.hwid == userHWID then
             local expire = tostring(item.expire or "permanent")
             if string.lower(expire) == "permanent" then
                 return true, "permanent"
@@ -88,13 +58,10 @@ local function verify_key(keyList, enteredKey, userHWID)
                 else
                     return false, "expired"
                 end
-            else
-                return false, "invalid_expire"
             end
         end
     end
-
-    return false, "invalid_key"
+    return false, "not_found"
 end
 
 -- 🧩 โหลดและรัน TEST.lua
@@ -116,40 +83,40 @@ local function load_main_script()
     end
 end
 
--- 🧩 สร้าง UI
-local function createKeyUI()
+-- 🧩 UI สำหรับตรวจสอบ HWID
+local function createHWIDUI()
     local screen = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
-    screen.Name = "Lucy_KeyUI"
+    screen.Name = "Lucy_HWIDUI"
 
     local frame = Instance.new("Frame", screen)
-    frame.Size = UDim2.new(0, 340, 0, 200)
-    frame.Position = UDim2.new(0.5, -170, 0.5, -100)
+    frame.Size = UDim2.new(0, 340, 0, 180)
+    frame.Position = UDim2.new(0.5, -170, 0.5, -90)
     frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
     frame.BorderSizePixel = 0
     Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 12)
 
     local title = Instance.new("TextLabel", frame)
     title.Size = UDim2.new(1, 0, 0, 36)
-    title.Text = "🔑 Enter Access Key"
+    title.Text = "🔑 HWID Access System"
     title.Font = Enum.Font.GothamSemibold
     title.TextSize = 18
     title.TextColor3 = Color3.fromRGB(255, 255, 255)
     title.BackgroundTransparency = 1
 
-    local hwidLabel = Instance.new("TextLabel", frame)
-    hwidLabel.Size = UDim2.new(1, -20, 0, 20)
-    hwidLabel.Position = UDim2.new(0, 10, 0, 36)
-    hwidLabel.Text = "HWID: " .. string.sub(hwid, 1, 16) .. "..."
-    hwidLabel.TextColor3 = Color3.fromRGB(140, 140, 140)
-    hwidLabel.Font = Enum.Font.Gotham
-    hwidLabel.TextSize = 12
-    hwidLabel.BackgroundTransparency = 1
-    hwidLabel.TextXAlignment = Enum.TextXAlignment.Left
+    local box = Instance.new("TextBox", frame)
+    box.Size = UDim2.new(1, -40, 0, 40)
+    box.Position = UDim2.new(0, 20, 0, 60)
+    box.Text = hwid
+    box.ClearTextOnFocus = false
+    box.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    box.TextColor3 = Color3.fromRGB(255, 255, 255)
+    box.Font = Enum.Font.Gotham
+    box.TextSize = 14
+    Instance.new("UICorner", box).CornerRadius = UDim.new(0, 8)
 
-    -- ปุ่มคัดลอก HWID
     local copyBtn = Instance.new("TextButton", frame)
-    copyBtn.Size = UDim2.new(0, 80, 0, 24)
-    copyBtn.Position = UDim2.new(1, -90, 0, 34)
+    copyBtn.Size = UDim2.new(0, 80, 0, 28)
+    copyBtn.Position = UDim2.new(1, -90, 0, 110)
     copyBtn.Text = "Copy HWID"
     copyBtn.Font = Enum.Font.GothamSemibold
     copyBtn.TextSize = 12
@@ -170,94 +137,42 @@ local function createKeyUI()
         end
     end)
 
-    local box = Instance.new("TextBox", frame)
-    box.Size = UDim2.new(1, -40, 0, 40)
-    box.Position = UDim2.new(0, 20, 0, 70)
-    box.PlaceholderText = "Your key here..."
-    box.Text = ""
-    box.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    box.TextColor3 = Color3.fromRGB(255, 255, 255)
-    box.Font = Enum.Font.Gotham
-    box.TextSize = 16
-    box.ClearTextOnFocus = true
-    Instance.new("UICorner", box).CornerRadius = UDim.new(0, 8)
-
     local button = Instance.new("TextButton", frame)
     button.Size = UDim2.new(1, -40, 0, 36)
-    button.Position = UDim2.new(0, 20, 0, 130)
-    button.Text = "Unlock"
+    button.Position = UDim2.new(0, 20, 0, 110)
+    button.Text = "Checking..."
     button.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
     button.TextColor3 = Color3.fromRGB(255, 255, 255)
     button.Font = Enum.Font.GothamSemibold
     button.TextSize = 16
     Instance.new("UICorner", button).CornerRadius = UDim.new(0, 8)
 
-    local function showNotice(msg, color)
-        local lbl = Instance.new("TextLabel", frame)
-        lbl.Size = UDim2.new(0, 260, 0, 30)
-        lbl.Position = UDim2.new(0.5, -130, 0, -36)
-        lbl.BackgroundColor3 = color or Color3.fromRGB(50, 50, 50)
-        lbl.TextColor3 = Color3.new(1, 1, 1)
-        lbl.Text = msg
-        lbl.Font = Enum.Font.GothamSemibold
-        lbl.TextSize = 14
-        lbl.BackgroundTransparency = 0.1
-        Instance.new("UICorner", lbl).CornerRadius = UDim.new(0, 6)
-        task.delay(2.5, function()
-            if lbl and lbl.Parent then lbl:Destroy() end
-        end)
-    end
-
+    button.Text = "Check HWID"
     button.MouseButton1Click:Connect(function()
-        local enteredKey = box.Text
-        if enteredKey == "" then
-            showNotice("⚠️ Please enter your key!", Color3.fromRGB(200, 150, 0))
-            return
-        end
-
         button.Text = "Checking..."
         button.Active = false
 
         local keyList = fetch_key_data()
-        local ok, info = verify_key(keyList, enteredKey, hwid)
+        local ok, info = verify_hwid(keyList, hwid)
 
         if ok then
-            saveKeyLocally(enteredKey)
-            showNotice("✅ Key verified!", Color3.fromRGB(0, 200, 80))
-            print("[Lucy Loader] Key valid. Expire:", info)
-            task.wait(1)
-            screen:Destroy()
+            print("[Lucy Loader] ✅ HWID matched! Expire:", info)
+            frame:Destroy()
             load_main_script()
         else
+            button.Text = "Denied"
             local msg = ({
-                invalid_key = "❌ Invalid Key!",
-                hwid_mismatch = "⚠️ HWID Mismatch!",
-                expired = "⏳ Key Expired!",
-                invalid_expire = "⚠️ Invalid Expire Date",
-                no_data = "⚠️ Cannot load key list!"
-            })[info] or "❌ Key Error!"
-            showNotice(msg, Color3.fromRGB(180, 50, 50))
-            button.Text = "Unlock"
+                expired = "⏳ Key Expired",
+                not_found = "❌ HWID Not Found",
+                no_data = "⚠️ key.json Missing"
+            })[info] or "❌ Invalid"
+            warn("[Lucy Loader]", msg)
+            task.wait(1.5)
+            button.Text = "Check HWID"
             button.Active = true
-            box.Text = ""
         end
     end)
 end
 
--- 🔄 Auto login check
-local savedKey = readSavedKey()
-if savedKey then
-    print("[Lucy Loader] Saved key found. Auto checking...")
-    local keyList = fetch_key_data()
-    local ok, info = verify_key(keyList, savedKey, hwid)
-    if ok then
-        print("[Lucy Loader] ✅ Auto login success! Expire:", info)
-        load_main_script()
-        return
-    else
-        print("[Lucy Loader] ❌ Auto login failed:", info)
-    end
-end
-
--- แสดง UI ถ้าไม่มี key ที่ใช้ได้
-createKeyUI()
+-- 🟢 เริ่ม Loader
+createHWIDUI()
