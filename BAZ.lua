@@ -31,19 +31,23 @@ end
 local autoFeedToggle
 
 -- Forward declarations
-
 -- Window
 local Window = WindUI:CreateWindow({
-    Title = "Build A Zoo",
+    Title = "Build-A-Zoo",
     Icon = "app-window-mac",
     IconThemed = true,
-    Author = "m0rgause",
+    Author = "V1.0",
     Folder = "Zebux",
-    Size = UDim2.fromOffset(520, 360),
+    Size = UDim2.fromOffset(600, 420),
     Transparent = true,
     Theme = "Dark",
-    -- No keysystem
+	Resizable = false,
 })
+Window:SetToggleKey(Enum.KeyCode.LeftControl)
+	Window:DisableTopbarButtons({
+    "Fullscreen"
+})
+	Window:LockAll()
 
 local Tabs = {
 	AutoTab		= Window:Tab ({ Title = "🥚 | ซื้อไข่ ออโต้ ✅"}),
