@@ -1596,7 +1596,8 @@ local EggData = {
 	SaberCubEgg = { Name = "Saber Cub Egg", Price = "40,000,000,000", Icon = "rbxassetid://100166022742233", Rarity = 6 },
 	UnicornEgg = { Name = "Unicorn Egg", Price = "40,000,000,000", Icon = "rbxassetid://123427249205445", Rarity = 6 },
 	UnicornProEgg = { Name = "Unicorn Pro Egg", Price = "50,000,000,000", Icon = "rbxassetid://101660420624990", Rarity = 6 },
-    GeneralKongEgg = { Name = "General Kong Egg", Price = "80,000,000,000", Icon = "rbxassetid://122824204814998", Rarity = 6 }
+    GeneralKongEgg = { Name = "General Kong Egg", Price = "80,000,000,000", Icon = "rbxassetid://122824204814998", Rarity = 6 },
+    GodzillaEgg = { Name = "Godzilla Egg", Price = "68,000,000,000", Icon = "rbxassetid://109242437168869", Rarity = 6 }
 }
 
 local MutationData = {
@@ -1963,7 +1964,8 @@ end
 local placeEggDropdown = Tabs.PlaceTab:Dropdown({
     Title = "🥚 Pick Pet Types",
     Desc = "Choose which pets to place",
-    Values = {"BasicEgg", "RareEgg", "SuperRareEgg", "EpicEgg", "LegendEgg", "PrismaticEgg", "HyperEgg", "VoidEgg", "BowserEgg", "DemonEgg", "CornEgg", "BoneDragonEgg", "UltraEgg", "DinoEgg", "FlyEgg", "UnicornEgg", "AncientEgg"},
+    Values = {"BasicEgg", "RareEgg", "SuperRareEgg", "EpicEgg", "LegendEgg", "SnowBunnyEgg", "PrismaticEgg", "HyperEgg", "DarkGoatyEgg", "VoidEgg", "BowserEgg", 
+    "DemonEgg", "RhinoRockEgg", "CornEgg", "BoneDragonEgg", "UltraEgg", "SaberCubEgg", "UnicornEgg", "UnicornProEgg", "GeneralKongEgg", "GodzillaEgg"},
     Value = {},
     Multi = true,
     AllowNone = true,
@@ -1976,7 +1978,7 @@ local placeEggDropdown = Tabs.PlaceTab:Dropdown({
 local placeMutationDropdown = Tabs.PlaceTab:Dropdown({
     Title = "🧬 Pick Mutations",
     Desc = "Choose which mutations to place (leave empty for all mutations)",
-    Values = {"Golden", "Diamond", "Electric", "Fire", "Jurassic"},
+    Values = {"Golden", "Diamond", "Electric", "Fire", "Jurassic","Snow"},
     Value = {},
     Multi = true,
     AllowNone = true,
