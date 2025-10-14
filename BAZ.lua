@@ -43,7 +43,7 @@ local Window = WindUI:CreateWindow({
     Theme = "Dark",
 	Resizable = false,
 })
-Window:SetToggleKey(Enum.KeyCode.LeftControl)
+--Window:SetToggleKey(Enum.KeyCode.LeftControl)
 	Window:DisableTopbarButtons({
     "Fullscreen"
 })
