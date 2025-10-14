@@ -423,7 +423,7 @@ local function getEggMutation(eggUID)
     if not conveyor then return nil end
     
     -- Check all conveyor belts
-    for i = 1, 9 do
+    for i = 1, 10 do
         local conveyorBelt = conveyor:FindFirstChild("Conveyor" .. i)
         if conveyorBelt then
             local belt = conveyorBelt:FindFirstChild("Belt")
@@ -493,7 +493,7 @@ local function getIslandBelts(islandName)
     if not conveyorRoot then return {} end
     local belts = {}
     -- Strictly look for Conveyor1..Conveyor9 in order
-    for i = 1, 9 do
+    for i = 1, 10 do
         local c = conveyorRoot:FindFirstChild("Conveyor" .. i)
         if c then
             local b = c:FindFirstChild("Belt")
@@ -968,7 +968,7 @@ local function getEggMutationFromGUI(eggUID)
     if not conveyor then return nil end
     
     -- Check all conveyor belts
-    for i = 1, 9 do
+    for i = 1, 10 do
         local conveyorBelt = conveyor:FindFirstChild("Conveyor" .. i)
         if conveyorBelt then
             local belt = conveyorBelt:FindFirstChild("Belt")
@@ -3069,7 +3069,7 @@ local function chooseAffordableUpgrades(netWorth)
             end
             local idLike = entry.ID or entry.Id or entry.Name or key
             local idx = parseConveyorIndexFromId(idLike)
-            if idx and type(cost) == "number" and netWorth >= cost and idx >= 1 and idx <= 9 and not purchasedUpgrades[idx] then
+            if idx and type(cost) == "number" and netWorth >= cost and idx >= 1 and idx <= 10 and not purchasedUpgrades[idx] then
                 table.insert(actions, { idx = idx, cost = cost })
             end
         end
