@@ -5,11 +5,16 @@
             "expire": "permanent"
         },
         {
-            "hwid": "935B2BD8-E09D-4020-BEF0-EECDE3A4400F",
+            "hwid": "935B2BD8-E09D-4020-BEF0-EECDE3A4400F", 
+            "expire": "permanent"
+        },
+        {
+            "hwid": "4BEBE2CD-DCF5-4F0F-90A3-4E61A9096008", 
             "expire": "permanent"
         }
     ]
 }
+
 
 
 
