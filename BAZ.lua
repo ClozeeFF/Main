@@ -1609,7 +1609,7 @@ local EggData = {
 local MutationData = {
     Golden = { Name = "Golden", Icon = "rbxassetid://127002529028834", Rarity = 10 },
     Diamond = { Name = "Diamond", Icon = "rbxassetid://121197098708770", Rarity = 20 },
-    Electirc = { Name = "Electric", Icon = "rbxassetid://117484832890686", Rarity = 50 },
+    Electric = { Name = "Electric", Icon = "rbxassetid://117484832890686", Rarity = 50 },
     Fire = { Name = "Fire", Icon = "rbxassetid://83433633155964", Rarity = 100 },
     Jurassic = { Name = "Jurassic", Icon = "rbxassetid://98638255041927", Rarity = 100 },
 	Snow = { Name = "Snow", Icon = "rbxassetid://89211775178687", Rarity = 100 }
