@@ -152,23 +152,8 @@ local MutationData = {
         Icon = "rbxassetid://121197098708770",
         Rarity = 20
     },
-    Eiectrlc = {
-        Name = "Eiectrlc",
-        Icon = "rbxassetid://117484832890686",
-        Rarity = 50
-    },
     Electric = {
         Name = "Electric",
-        Icon = "rbxassetid://117484832890686",
-        Rarity = 50
-    },
-    Eiectric = {
-        Name = "Eiectric",
-        Icon = "rbxassetid://117484832890686",
-        Rarity = 50
-    },
-    Electrlc = {
-        Name = "Electrlc",
         Icon = "rbxassetid://117484832890686",
         Rarity = 50
     },
