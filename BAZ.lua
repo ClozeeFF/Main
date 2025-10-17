@@ -63,19 +63,19 @@ local Tabs = {
 	SaveTab		= Window:Tab ({ Title = "💾 | เซฟ ออฟชั่น ✅"})
 }
 
--- local Dialog = Window:Dialog({
---     Icon = "bird",
---     Title = "_BAZ scripts",
---     Content = "Update v1.0",
---     Buttons = {
---         {
---             Title = "Confirm",
---             Callback = function()
---                 print("Confirmed!")
---             end,
---         },
---     },
--- })
+ local Dialog = Window:Dialog({
+     Icon = "app-window-mac",
+     Title = "Build-A-Zoo",
+     Content = "Fix Autobuy Egg - Electric",
+     Buttons = {
+         {
+             Title = "Confirm",
+             Callback = function()
+                 print("Confirmed!")
+             end,
+         },
+     },
+ })
 --==================================================================================
 
 -- Function to load all saved settings before any function starts
