@@ -152,7 +152,7 @@ local MutationData = {
         Icon = "rbxassetid://121197098708770",
         Rarity = 20
     },
-    Electirc = {
+    Electric = {
         Name = "Electric",
         Icon = "rbxassetid://117484832890686",
         Rarity = 50
