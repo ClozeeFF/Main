@@ -243,7 +243,11 @@ function AutoFeedSystem.feedPet(petName)
     return true
 end
 
-function AutoFeedSystem.runAutoFeed(autoFeedEnabled, feedFruitStatus, updateFeedStatusParagraph, getSelectedFruits)
+AutoFeedSystem.Enabled = false
+
+function AutoFeedSystem.runAutoFeed(_, feedFruitStatus, updateFeedStatusParagraph, getSelectedFruits)
+    AutoFeedSystem.Enabled = true
+    
     while autoFeedEnabled do
         local shouldContinue = true
         local ok, err = pcall(function()
@@ -262,7 +266,8 @@ function AutoFeedSystem.runAutoFeed(autoFeedEnabled, feedFruitStatus, updateFeed
 
             -- Check each pet for feeding opportunity
             for _, petData in ipairs(bigPets) do
-                if not autoFeedEnabled then
+                    
+                if not AutoFeedSystem.Enabled then
                     break
                 end
 
@@ -426,6 +431,13 @@ function AutoFeedSystem.runAutoFeed(autoFeedEnabled, feedFruitStatus, updateFeed
             task.wait(2)
         end
     end
+    
+    feedFruitStatus.lastAction = "⏹️ AutoFeed stopped"
+    if updateFeedStatusParagraph then updateFeedStatusParagraph() end
+end
+
+function AutoFeedSystem.stop()
+    AutoFeedSystem.Enabled = false
 end
 
 -- Debug function to help troubleshoot auto feed issues
