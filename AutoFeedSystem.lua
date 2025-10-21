@@ -245,7 +245,7 @@ end
 
 AutoFeedSystem.Enabled = false
 
-function AutoFeedSystem.runAutoFeed(_, feedFruitStatus, updateFeedStatusParagraph, getSelectedFruits)
+function AutoFeedSystem.runAutoFeed(state,feedFruitStatus, updateFeedStatusParagraph, getSelectedFruits )
     AutoFeedSystem.Enabled = true
     
     while autoFeedEnabled do
