@@ -19,8 +19,8 @@ end
 
 -- Canonical fruit list used by the auto-feed system
 local KNOWN_FRUITS = {"Strawberry", "Blueberry", "Watermelon", "Apple", "Orange", "Corn", "Banana", "Grape", "Pear",
-                      "Pineapple", "Dragon Fruit", "Gold Mango", "Bloodstone Cycad", "Colossal Pinecone", "Volt Ginkgo", 
-                      "Deepsea Pearl Fruit", "Durian"}
+                      "Pineapple", "DragonFruit", "GoldMango", "BloodstoneCycad", "ColossalPinecone", "VoltGinkgo", 
+                      "DeepseaPearlFruit", "Durian", "Pumpkin", "CandyCorn"}
 
 local CANONICAL_FRUIT_BY_NORMALIZED = {}
 for _, fruitName in ipairs(KNOWN_FRUITS) do
