@@ -46,17 +46,20 @@ function AutoFeedSystem.getBigPets()
 
     for _, petModel in ipairs(petsFolder:GetChildren()) do
         if petModel:IsA("Model") then
-
+            
+            local rootPart = petModel:FindFirstChild("RootPart")
+            if rootPart then
                 -- Check if it's our pet by looking for UserId attribute
-                local petUserId = petModel:GetAttribute("UserId")
+                local petUserId = rootPart:GetAttribute("UserId")
                 if petUserId and tostring(petUserId) == tostring(localPlayer.UserId) then
                     -- Check if this pet has BigPetGUI
-                    local bigPetGUI = petModel:FindFirstChild("GUI/BigPetGUI")
+                    local bigPetGUI = rootPart:FindFirstChild("GUI/BigPetGUI")
                     if bigPetGUI then
                         -- This is a Big Pet, add it to the list
                         table.insert(pets, {
                             model = petModel,
                             name = petModel.Name,
+                            rootPart = rootPart,
                             bigPetGUI = bigPetGUI
                         })
                     end
@@ -293,7 +296,7 @@ function AutoFeedSystem.runAutoFeed(_, feedFruitStatus, updateFeedStatusParagrap
                             end
 
                             if equipSuccess then
-                                task.wait(0.2)
+                                task.wait(0.5)
                                 local feedSuccess = false
                                 for retry = 1, 3 do
                                     if AutoFeedSystem.feedPet(petData.name) then
@@ -378,12 +381,15 @@ function AutoFeedSystem.debugAutoFeed()
     for _, petModel in ipairs(petsFolder:GetChildren()) do
         if petModel:IsA("Model") then
             totalPets = totalPets + 1
-
-                local petUserId = petModel:GetAttribute("UserId")
+            
+            local rootPart = petModel:FindFirstChild("RootPart")
+            if rootPart then
+                
+                local petUserId = rootPart:GetAttribute("UserId")
                 if petUserId and tostring(petUserId) == tostring(localPlayer.UserId) then
                     myPets = myPets + 1
 
-                    local bigPetGUI = petModel:FindFirstChild("GUI/BigPetGUI")
+                    local bigPetGUI = rootPart:FindFirstChild("GUI/BigPetGUI")
                     if bigPetGUI then
                         bigPets = bigPets + 1
 
