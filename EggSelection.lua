@@ -610,15 +610,22 @@ local function createPageTabs(parent)
 end
 
 -- Create UI
-function EggSelection.CreateUI()
-    if ScreenGui then
-        ScreenGui:Destroy()
+function EggSelection.CreateUI(parent)
+--    if ScreenGui then
+--       ScreenGui:Destroy()
+--   end
+    if not parent then
+        warn("❌ No parent tab provided for EggSelection UI.")
+        return
     end
-    
-    ScreenGui = Instance.new("ScreenGui")
+
+	
+    ScreenGui = Instance.new("Frame")
     ScreenGui.Name = "EggSelectionUI"
-    ScreenGui.Parent = PlayerGui
-    
+    ScreenGui.Size = UDim2.new(1, 0, 1, 0)
+    ScreenGui.BackgroundTransparency = 1
+	ScreenGui.Parent = parent
+	
     MainFrame = Instance.new("Frame")
     MainFrame.Name = "MainFrame"
     MainFrame.Size = UDim2.new(0, 600, 0, 400)
@@ -806,7 +813,7 @@ function EggSelection.RefreshContent()
 end
 
 -- Public Functions
-function EggSelection.Show(callback, toggleCallback, savedEggs, savedMutations)
+function EggSelection.Show(parent, callback, toggleCallback, savedEggs, savedMutations)
     onSelectionChanged = callback
     onToggleChanged = toggleCallback
     
@@ -824,14 +831,16 @@ function EggSelection.Show(callback, toggleCallback, savedEggs, savedMutations)
     end
     
     if not ScreenGui then
-        EggSelection.CreateUI()
+        --EggSelection.CreateUI()
+		EggSelection.CreateUI(parent)
     end
     
     -- Wait a frame to ensure UI is created
     task.wait()
     EggSelection.RefreshContent()
-    ScreenGui.Enabled = true
-    ScreenGui.Parent = PlayerGui
+	ScreenGui.Visible = true
+    --ScreenGui.Enabled = true
+    --ScreenGui.Parent = PlayerGui
 end
 
 function EggSelection.Hide()
