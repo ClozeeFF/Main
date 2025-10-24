@@ -58,7 +58,6 @@ function AutoFeedSystem.getBigPets()
                         table.insert(pets, {
                             model = petModel,
                             name = petModel.Name,
-                            rootPart = rootPart,
                             bigPetGUI = bigPetGUI
                         })
                     end
@@ -380,12 +379,10 @@ function AutoFeedSystem.debugAutoFeed()
     for _, petModel in ipairs(petsFolder:GetChildren()) do
         if petModel:IsA("Model") then
             totalPets = totalPets + 1
-            local rootPart = petModel:FindFirstChild("RootPart")
-            if rootPart then
-                local petUserId = rootPart:GetAttribute("UserId")
+                local petUserId = petModel:GetAttribute("UserId")
                 if petUserId and tostring(petUserId) == tostring(localPlayer.UserId) then
                     myPets = myPets + 1
-                    local bigPetGUI = rootPart:FindFirstChild("GUI/BigPetGUI")
+                    local bigPetGUI = petModel:FindFirstChild("GUI/BigPetGUI")
                     if bigPetGUI then
                         bigPets = bigPets + 1
 
