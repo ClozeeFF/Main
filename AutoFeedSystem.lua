@@ -296,7 +296,7 @@ function AutoFeedSystem.runAutoFeed(_, feedFruitStatus, updateFeedStatusParagrap
                             end
 
                             if equipSuccess then
-                                task.wait(0.5)
+                                task.wait(0.2)
                                 local feedSuccess = false
                                 for retry = 1, 3 do
                                     if AutoFeedSystem.feedPet(petData.name) then
